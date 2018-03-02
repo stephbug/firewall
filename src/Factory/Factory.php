@@ -40,11 +40,15 @@ class Factory
 
     private function createAuthenticationService(Collection $collection): Collection
     {
-        return $collection->filter(function (array $middleware, string $name) {
+        $services = new Collection();
+
+        $collection->filter(function (string $name) {
             return $this->manager->hasFirewall($name);
-        })->map(function (array $middleware, string $name) {
-            return $this->manager->guard($name);
+        })->each(function (string $name) use ($services) {
+            $services->put($name, $this->manager->guard($name));
         });
+
+        return $services;
     }
 
     private function process(Collection $services, Request $request): Collection

@@ -15,7 +15,7 @@ return [
         \StephBug\Firewall\Factory\Bootstrap\LogoutService::class,
         \StephBug\Firewall\Factory\Bootstrap\AnonymousRequest::class,
         \StephBug\Firewall\Factory\Bootstrap\AccessControl::class,
-        \StephBug\Firewall\Factory\Contracts\FirewallExceptionRegistry::class
+        \StephBug\Firewall\Factory\Bootstrap\FirewallExceptionHandler::class
     ],
 
     'context' => [
