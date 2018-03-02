@@ -11,7 +11,7 @@ use StephBug\SecurityModel\Application\Exception\SecurityException;
 use StephBug\SecurityModel\Application\Http\Entrypoint\Entrypoint;
 use Symfony\Component\HttpFoundation\Response;
 
-class SecurityHandler
+class SecurityHandler implements DebugFirewall
 {
     /**
      * @var ContextualHandler

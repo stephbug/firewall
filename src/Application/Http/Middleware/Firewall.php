@@ -12,6 +12,7 @@ use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
+use StephBug\Firewall\Application\Exception\DebugFirewall;
 use StephBug\Firewall\Factory\Contracts\FirewallExceptionRegistry;
 use StephBug\Firewall\Factory\Factory;
 
@@ -67,10 +68,10 @@ class Firewall
     {
         $exception = $this->app->make(end($middleware));
 
-        if (!$exception instanceof FirewallExceptionRegistry) {
+        if (!$exception instanceof DebugFirewall) {
             throw new \RuntimeException(
                 sprintf('Last middleware of firewall %s must implement %s interface',
-                    $name, FirewallExceptionRegistry::class)
+                    $name, DebugFirewall::class)
             );
         }
 
