@@ -6,21 +6,17 @@ namespace StephBug\Firewall\Factory\Contracts;
 
 use StephBug\Firewall\Factory\Payload\PayloadFactory;
 use StephBug\Firewall\Factory\Payload\PayloadService;
-use Symfony\Component\HttpFoundation\RequestMatcher;
+use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
 
 interface AuthenticationServiceFactory
 {
     public function create(PayloadService $payload): PayloadFactory;
 
-    public function registerProvider(): string;
-
-    public function registerFirewall(): string;
-
     public function registerEntrypoint(): ?string;
 
     public function position(): string;
 
-    public function matcher(): ?RequestMatcher;
+    public function matcher(): ?RequestMatcherInterface;
 
     public function userProviderKey(): ?string;
 }
