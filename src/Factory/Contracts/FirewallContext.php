@@ -28,4 +28,8 @@ interface FirewallContext
     public function entrypointId(): ?string;
 
     public function setEntrypointId(string $entrypointId): FirewallContext;
+
+    public function unauthorizedId(): ?string;
+
+    public function setUnauthorizedId(string $unauthorizedId): FirewallContext;
 }

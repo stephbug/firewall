@@ -57,7 +57,7 @@ class Firewall
         $this->factory
             ->raise(new Collection($route->middleware()), $request)
             ->each(function (array $middleware, string $name) {
-                //$middleware = $this->setExceptionHandler($middleware, $name);
+                $middleware = $this->setExceptionHandler($middleware, $name);
 
                 $this->router->middlewareGroup($name, $middleware);
             });
@@ -74,7 +74,7 @@ class Firewall
             );
         }
 
-        $this->app->make(ExceptionHandler::class)->setFirewallExceptionHandler($exception);
+        $this->app->make(ExceptionHandler::class)->setFirewallhandler($exception);
 
         return $middleware;
     }

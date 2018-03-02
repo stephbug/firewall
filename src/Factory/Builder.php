@@ -77,6 +77,11 @@ class Builder
         return $this->aggregate->providers();
     }
 
+    public function entrypoints(): array
+    {
+        return $this->aggregate->entrypoints();
+    }
+
     final public function middleware(): array
     {
         return $this->aggregate->firewall();

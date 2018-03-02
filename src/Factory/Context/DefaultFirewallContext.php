@@ -32,6 +32,11 @@ class DefaultFirewallContext implements FirewallContext
     private $entrypointId;
 
     /**
+     * @var string
+     */
+    private $unauthorizedId;
+
+    /**
      * @var bool
      */
     private $anonymous = false;
@@ -97,5 +102,17 @@ class DefaultFirewallContext implements FirewallContext
     public function entrypointId(): ?string
     {
         return $this->entrypointId;
+    }
+
+    public function unauthorizedId(): ?string
+    {
+        return $this->unauthorizedId;
+    }
+
+    public function setUnauthorizedId(string $unauthorizedId): FirewallContext
+    {
+        $this->unauthorizedId = $unauthorizedId;
+
+        return $this;
     }
 }
