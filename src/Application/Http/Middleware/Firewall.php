@@ -66,7 +66,7 @@ class Firewall
 
     protected function setExceptionHandler(array $middleware, string $name): array
     {
-        $exception = $this->app->make(end($middleware));
+        $exception = $this->app->make(array_pop($middleware));
 
         if (!$exception instanceof DebugFirewall) {
             throw new \RuntimeException(
@@ -75,7 +75,7 @@ class Firewall
             );
         }
 
-        $this->app->make(ExceptionHandler::class)->setFirewallhandler($exception);
+        $this->app->make(ExceptionHandler::class)->setFirewallHandler($exception);
 
         return $middleware;
     }
