@@ -6,7 +6,7 @@ namespace StephBug\Firewall\Factory\Contracts;
 
 use StephBug\Firewall\Factory\Payload\PayloadFactory;
 use StephBug\Firewall\Factory\Payload\PayloadService;
-use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
+use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 
 interface AuthenticationServiceFactory
 {
