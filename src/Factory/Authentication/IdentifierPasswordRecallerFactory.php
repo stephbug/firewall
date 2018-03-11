@@ -43,7 +43,6 @@ class IdentifierPasswordRecallerFactory extends RecallerAuthenticationFactory
         return $id;
     }
 
-
     public function serviceKey(): string
     {
         return 'form-login-recaller';

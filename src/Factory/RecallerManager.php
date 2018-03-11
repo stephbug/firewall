@@ -41,7 +41,7 @@ class RecallerManager
         return $this->services[$payload->serviceKey] = $this->createService($payload);
     }
 
-    public function createService(PayloadRecaller $payload): string
+    protected function createService(PayloadRecaller $payload): string
     {
         $recallerId = isset($this->callback[$payload->serviceKey])
             ? ($this->callback[$payload->serviceKey])($this->app)

@@ -32,7 +32,7 @@ class Manager
     public function guard(string $name): Builder
     {
         if (!$this->hasFirewall($name)) {
-            throw new \RuntimeException(sprintf('no config defined for guard name %s', $name));
+            throw new \RuntimeException(sprintf('no configuration defined for guard name %s', $name));
         }
 
         return $this->guards[$name] ?? $this->guards[$name] = $this->resolve($name);
