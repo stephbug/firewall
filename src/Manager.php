@@ -70,10 +70,8 @@ class Manager
 
         $factories = new AuthenticationServices();
 
-        foreach ($services as $name => $service) {
-            foreach ($service as $serviceKey => $serviceId) {
-                $factories->add($serviceKey, $this->app->make($serviceId));
-            }
+        foreach ($services as $serviceKey => $serviceId) {
+            $factories->add($serviceKey, $this->app->make($serviceId));
         }
 
         return $factories;
