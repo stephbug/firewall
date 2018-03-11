@@ -26,9 +26,9 @@ class AuthenticationServices
         $this->request = $request;
     }
 
-    public function add(AuthenticationServiceFactory $serviceFactory): self
+    public function add(string $serviceKey, AuthenticationServiceFactory $serviceFactory): self
     {
-        $this->services->push($serviceFactory);
+        $this->services->put($serviceKey, $serviceFactory);
 
         return $this;
     }

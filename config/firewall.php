@@ -3,7 +3,7 @@
 return [
 
     'services' => [
-        //'front' => [ 'factory']
+        //'middlewareGroupName' => [ $serviceKey =>  $factory/$middleware]
     ],
 
     'bootstraps' => [

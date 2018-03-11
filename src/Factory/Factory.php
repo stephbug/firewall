@@ -42,11 +42,13 @@ class Factory
     {
         $services = new Collection();
 
-        $collection->filter(function (string $name) {
-            return $this->manager->hasFirewall($name);
-        })->each(function (string $name) use ($services) {
-            $services->put($name, $this->manager->guard($name));
-        });
+        $collection
+            ->filter(function (string $name) {
+                return $this->manager->hasFirewall($name);
+            })
+            ->each(function (string $name) use ($services) {
+                $services->put($name, $this->manager->guard($name));
+            });
 
         return $services;
     }

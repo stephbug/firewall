@@ -12,11 +12,11 @@ interface AuthenticationServiceFactory
 {
     public function create(PayloadService $payload): PayloadFactory;
 
-    public function registerEntrypoint(): ?string;
-
     public function position(): string;
 
     public function matcher(): ?RequestMatcherInterface;
 
     public function userProviderKey(): ?string;
+
+    public function serviceKey(): string;
 }

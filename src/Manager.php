@@ -68,13 +68,15 @@ class Manager
     {
         $services = $this->getConfig('services.' . $name, []);
 
-        $factories = [];
+        $factories = new AuthenticationServices();
 
-        foreach ($services as $serviceKey => $serviceId) {
-            $factories[] = $this->app->make($serviceId);
+        foreach ($services as $name => $service) {
+            foreach ($service as $serviceKey => $serviceId) {
+                $factories->add($serviceKey, $this->app->make($serviceId));
+            }
         }
 
-        return new AuthenticationServices($factories);
+        return $factories;
     }
 
     public function hasFirewall(string $name): bool
