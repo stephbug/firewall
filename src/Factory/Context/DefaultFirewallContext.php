@@ -7,6 +7,7 @@ namespace StephBug\Firewall\Factory\Context;
 use StephBug\Firewall\Factory\Contracts\FirewallContext;
 use StephBug\SecurityModel\Application\Values\AnonymousKey;
 use StephBug\SecurityModel\Application\Values\FirewallKey;
+use StephBug\SecurityModel\Application\Values\RecallerKey;
 use StephBug\SecurityModel\Application\Values\SecurityKey;
 
 class DefaultFirewallContext implements FirewallContext
@@ -14,37 +15,47 @@ class DefaultFirewallContext implements FirewallContext
     /**
      * @var string
      */
-    private $securityKey;
+    protected $securityKey;
 
     /**
      * @var string
      */
-    private $anonymousKey;
+    protected $anonymousKey;
 
     /**
      * @var string
      */
-    private $userProviderId;
+    protected $userProviderId;
 
     /**
      * @var string
      */
-    private $entrypointId;
+    protected $entrypointId;
 
     /**
      * @var string
      */
-    private $unauthorizedId;
+    protected $unauthorizedId;
 
     /**
      * @var bool
      */
-    private $anonymous = false;
+    protected $anonymous = false;
 
     /**
      * @var bool
      */
-    private $stateless = true;
+    protected $stateless = true;
+
+    /**
+     * @var array
+     */
+    protected $logout = [];
+
+    /**
+     * @var array
+     */
+    protected $recaller = [];
 
     public function securityKey(): SecurityKey
     {
@@ -114,5 +125,39 @@ class DefaultFirewallContext implements FirewallContext
         $this->unauthorizedId = $unauthorizedId;
 
         return $this;
+    }
+
+    public function addLogout(string $serviceKey, array $payload): FirewallContext
+    {
+        $this->logout[$serviceKey] = $payload;
+
+        return $this;
+    }
+
+    public function hasLogoutKey(string $serviceKey): bool
+    {
+        return isset($this->logout[$serviceKey]);
+    }
+
+    public function logout(string $serviceKey): ?array
+    {
+        return $this->logout[$serviceKey] ?? null;
+    }
+
+    public function addRecaller(string $serviceKey, string $recallerKey): FirewallContext
+    {
+        $this->recaller[$serviceKey] = new RecallerKey($recallerKey);
+
+        return $this;
+    }
+
+    public function hasRecaller(string $serviceKey): bool
+    {
+        return isset($this->recaller[$serviceKey]);
+    }
+
+    public function recaller(string $serviceKey): ?RecallerKey
+    {
+        return $this->recaller[$serviceKey] ?? null;
     }
 }
