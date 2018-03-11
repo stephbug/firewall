@@ -10,6 +10,7 @@ use Illuminate\Support\ServiceProvider;
 use StephBug\Firewall\Application\Http\Middleware\Firewall;
 use StephBug\Firewall\Application\Http\Middleware\SessionContext;
 use StephBug\Firewall\Factory\Factory;
+use StephBug\Firewall\Factory\RecallerManager;
 use StephBug\Firewall\Manager;
 
 class FirewallServiceProvider extends ServiceProvider
@@ -24,6 +25,8 @@ class FirewallServiceProvider extends ServiceProvider
         $this->mergeConfig();
 
         $this->app->singleton(Manager::class);
+
+        $this->app->singleton(RecallerManager::class);
     }
 
     public function boot(): void

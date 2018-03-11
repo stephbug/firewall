@@ -36,13 +36,13 @@ abstract class RecallerAuthenticationFactory implements AuthenticationServiceFac
 
         if (!$recallerKey) {
             throw new \RuntimeException(sprintf(
-                'Missing recaller key for service key %' . $this->mirrorKey()
+                'Missing recaller key for service key %s', $this->mirrorKey()
             ));
         }
 
         if (!$this->recallerManager->hasService($this->mirrorKey())) {
             throw new \RuntimeException(sprintf(
-                'Missing payload recaller for service key %' . $this->mirrorKey()
+                'No recaller service has been registered for service key %s', $this->mirrorKey()
             ));
         }
 
@@ -55,7 +55,7 @@ abstract class RecallerAuthenticationFactory implements AuthenticationServiceFac
 
     public function position(): string
     {
-        return 'remember-me';
+        return 'remember_me';
     }
 
     abstract public function mirrorKey(): string;

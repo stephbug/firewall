@@ -44,8 +44,8 @@ class RecallerManager
     public function createService(PayloadRecaller $payload): string
     {
         $recallerId = isset($this->callback[$payload->serviceKey])
-            ? ($this->app)($this->callback[$payload->serviceKey])
-            : ($this->app)($this->registerSimpleService($payload));
+            ? ($this->callback[$payload->serviceKey])($this->app)
+            : ($this->registerSimpleService($payload))($this->app);
 
         $this->setRecallerOnResolvingListener($recallerId, $payload->firewallId);
 
