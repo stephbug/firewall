@@ -7,7 +7,7 @@ namespace StephBug\Firewall\Factory\Bootstrap;
 use Illuminate\Contracts\Foundation\Application;
 use StephBug\Firewall\Factory\Builder;
 use StephBug\Firewall\Factory\Contracts\FirewallRegistry;
-use StephBug\Firewall\Factory\LogoutHandler;
+use StephBug\Firewall\Factory\LogoutManager;
 
 class LogoutService implements FirewallRegistry
 {
@@ -17,21 +17,21 @@ class LogoutService implements FirewallRegistry
     private $app;
 
     /**
-     * @var LogoutHandler
+     * @var LogoutManager
      */
-    private $logoutHandler;
+    private $logoutManager;
 
-    public function __construct(Application $app, LogoutHandler $logoutHandler)
+    public function __construct(Application $app, LogoutManager $logoutManager)
     {
         $this->app = $app;
-        $this->logoutHandler = $logoutHandler;
+        $this->logoutManager = $logoutManager;
     }
 
     public function compose(Builder $builder, \Closure $make)
     {
-        if ($this->logoutHandler->hasServices()) {
-
-        }
+        $this->logoutManager->setLogoutContext(
+            $builder->context()->logout()
+        );
 
         return $make($builder);
     }

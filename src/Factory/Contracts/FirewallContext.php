@@ -38,7 +38,9 @@ interface FirewallContext
 
     public function hasLogoutKey(string $serviceKey): bool;
 
-    public function logout(string $serviceKey): ?array;
+    public function logout(): array;
+
+    public function logoutByKey(string $serviceKey): ?array;
 
     public function addRecaller(string $serviceKey, string $recallerKey): FirewallContext;
 

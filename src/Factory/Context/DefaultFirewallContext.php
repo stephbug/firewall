@@ -139,7 +139,12 @@ class DefaultFirewallContext implements FirewallContext
         return isset($this->logout[$serviceKey]);
     }
 
-    public function logout(string $serviceKey): ?array
+    public function logout(): array
+    {
+        return $this->logout;
+    }
+
+    public function logoutByKey(string $serviceKey): ?array
     {
         return $this->logout[$serviceKey] ?? null;
     }
