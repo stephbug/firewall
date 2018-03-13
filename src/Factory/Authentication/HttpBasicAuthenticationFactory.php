@@ -10,6 +10,7 @@ use StephBug\Firewall\Factory\Contracts\AuthenticationServiceFactory;
 use StephBug\Firewall\Factory\Payload\PayloadFactory;
 use StephBug\Firewall\Factory\Payload\PayloadService;
 use StephBug\SecurityModel\Application\Http\Firewall\HttpBasicAuthenticationFirewall;
+use StephBug\SecurityModel\Application\Http\Request\HttpBasicAuthenticationRequest;
 use StephBug\SecurityModel\Guard\Authentication\Providers\IdentifierPasswordAuthenticationProvider;
 use StephBug\SecurityModel\Guard\Guard;
 use StephBug\SecurityModel\User\UserChecker;
@@ -73,7 +74,7 @@ class HttpBasicAuthenticationFactory implements AuthenticationServiceFactory
 
     public function matcher(): ?RequestMatcherInterface
     {
-        return new HttpBasicAuthenticationFactory();
+        return new HttpBasicAuthenticationRequest();
     }
 
     public function userProviderKey(): ?string
