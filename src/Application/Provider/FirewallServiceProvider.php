@@ -54,7 +54,7 @@ class FirewallServiceProvider extends ServiceProvider
 
     public function provides(): array
     {
-        return [Manager::class];
+        return [Manager::class, RecallerManager::class, LogoutManager::class];
     }
 
     protected function mergeConfig(): void
