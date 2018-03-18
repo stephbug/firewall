@@ -48,6 +48,11 @@ class DefaultFirewallContext implements FirewallContext
     protected $stateless = true;
 
     /**
+     * @var bool
+     */
+    protected $allowToSwitch = false;
+
+    /**
      * @var array
      */
     protected $logout = [];
@@ -164,5 +169,17 @@ class DefaultFirewallContext implements FirewallContext
     public function recaller(string $serviceKey): ?RecallerKey
     {
         return $this->recaller[$serviceKey] ?? null;
+    }
+
+    public function isAllowedToSwitch(): bool
+    {
+        return $this->allowToSwitch;
+    }
+
+    public function setAllowToSwitch(bool $allowToSwitch): FirewallContext
+    {
+        $this->allowToSwitch = $allowToSwitch;
+
+        return $this;
     }
 }
