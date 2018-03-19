@@ -79,6 +79,11 @@ class FirewallExceptionHandler implements FirewallExceptionRegistry
                 continue;
             }
 
+            /**
+             * when a specific listener is resolved and an entrypoint has been returned from
+             * an authentication service factory, we resolve this entrypoint and set it
+             * on the debug firewall handler
+             */
             $this->app->resolving($serviceId,
                 function (SecurityHandler $securityHandler, Application $app) use ($entrypoint) {
                     $securityHandler->setEntrypoint(

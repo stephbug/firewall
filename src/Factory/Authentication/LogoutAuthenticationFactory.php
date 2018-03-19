@@ -33,7 +33,7 @@ abstract class LogoutAuthenticationFactory implements AuthenticationServiceFacto
     {
         $factory = new PayloadFactory();
 
-        if (!$payload->context->logout($this->mirrorKey())) {
+        if (!$payload->context->logoutByKey($this->mirrorKey())) {
             return $factory;
         }
 
