@@ -9,6 +9,7 @@ use StephBug\Firewall\Factory\Contracts\AuthenticationServiceFactory;
 use StephBug\Firewall\Factory\Payload\PayloadFactory;
 use StephBug\Firewall\Factory\Payload\PayloadService;
 use StephBug\Firewall\Factory\RecallerManager;
+use StephBug\SecurityModel\Application\Exception\InvalidArgument;
 use StephBug\SecurityModel\Application\Values\RecallerKey;
 use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 
@@ -35,13 +36,13 @@ abstract class RecallerAuthenticationFactory implements AuthenticationServiceFac
         $recallerKey = $payload->context->recaller($this->mirrorKey());
 
         if (!$recallerKey) {
-            throw new \RuntimeException(sprintf(
+            throw InvalidArgument::reason(sprintf(
                 'Missing recaller key for service key %s', $this->mirrorKey()
             ));
         }
 
         if (!$this->recallerManager->hasService($this->mirrorKey())) {
-            throw new \RuntimeException(sprintf(
+            throw InvalidArgument::reason(sprintf(
                 'No recaller service has been registered for service key %s', $this->mirrorKey()
             ));
         }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace StephBug\Firewall\Factory;
 
 use StephBug\Firewall\Factory\Contracts\FirewallContext;
+use StephBug\SecurityModel\Application\Exception\InvalidArgument;
 
 class UserProviders
 {
@@ -23,7 +24,9 @@ class UserProviders
         $id = $provider ?? $context->userProviderId();
 
         if (!array_key_exists($id, $this->userProviders)) {
-            throw new \RuntimeException(sprintf('User provider with id %s does not exist', $id));
+            throw InvalidArgument::reason(
+                sprintf('User provider with id %s does not exist', $id)
+            );
         }
 
         return $this->userProviders[$id];

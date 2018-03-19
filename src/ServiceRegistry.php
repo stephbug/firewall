@@ -12,6 +12,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 use StephBug\Firewall\Application\Exception\DebugFirewall;
 use StephBug\Firewall\Factory\Factory;
+use StephBug\SecurityModel\Application\Exception\InvalidArgument;
 
 class ServiceRegistry
 {
@@ -53,7 +54,7 @@ class ServiceRegistry
         $exception = $this->app->make(array_pop($middleware));
 
         if (!$exception instanceof DebugFirewall) {
-            throw new \RuntimeException(
+            throw InvalidArgument::reason(
                 sprintf('Last middleware of firewall %s must implement %s interface',
                     $name, DebugFirewall::class)
             );

@@ -9,6 +9,7 @@ use StephBug\Firewall\Factory\Contracts\AuthenticationServiceFactory;
 use StephBug\Firewall\Factory\LogoutManager;
 use StephBug\Firewall\Factory\Payload\PayloadFactory;
 use StephBug\Firewall\Factory\Payload\PayloadService;
+use StephBug\SecurityModel\Application\Exception\InvalidArgument;
 
 abstract class LogoutAuthenticationFactory implements AuthenticationServiceFactory
 {
@@ -47,7 +48,7 @@ abstract class LogoutAuthenticationFactory implements AuthenticationServiceFacto
     {
         $this->app->resolving($firewallId, function ($firewall) {
             if (!method_exists($firewall, 'addHandler')) {
-                throw new \RuntimeException(
+                throw InvalidArgument::reason(
                     sprintf('Missing method "addHandler" on class %', get_class($firewall))
                 );
             }

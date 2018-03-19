@@ -49,7 +49,11 @@ class AuthenticationServices
     {
         if ($this->request) {
             return $services->filter(function (AuthenticationServiceFactory $serviceFactory) {
-                return $serviceFactory->matcher()->matches($this->request);
+                if ($matcher = $serviceFactory->matcher()) {
+                    return $serviceFactory->matcher()->matches($this->request);
+                }
+
+                return true;
             });
         }
 

@@ -7,6 +7,7 @@ namespace StephBug\Firewall\Factory;
 use Illuminate\Contracts\Cookie\QueueingFactory;
 use Illuminate\Contracts\Foundation\Application;
 use StephBug\Firewall\Factory\Payload\PayloadRecaller;
+use StephBug\SecurityModel\Application\Exception\InvalidArgument;
 use StephBug\SecurityModel\Guard\Service\Recaller\CookieSecurity;
 use StephBug\SecurityModel\Guard\Service\Recaller\SimpleRecallerService;
 
@@ -63,7 +64,7 @@ class RecallerManager
             return $this->services[$serviceKey];
         }
 
-        throw new \RuntimeException(
+        throw InvalidArgument::reason(
             sprintf('No recaller service has been registered for service key %s', $serviceKey)
         );
     }
@@ -100,7 +101,7 @@ class RecallerManager
     {
         $this->app->resolving($firewallId, function ($firewall, Application $app) use ($recallerId) {
             if (!method_exists($firewall, 'setRecaller')) {
-                throw new \RuntimeException(
+                throw InvalidArgument::reason(
                     sprintf('Missing "setRecaller" method on firewall class %s', get_class($firewall))
                 );
             }

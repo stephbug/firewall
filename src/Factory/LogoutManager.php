@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace StephBug\Firewall\Factory;
 
 use Illuminate\Contracts\Foundation\Application;
+use StephBug\SecurityModel\Application\Exception\InvalidArgument;
 
 class LogoutManager
 {
@@ -31,7 +32,7 @@ class LogoutManager
     public function addHandler(string $handler, string $serviceKey): LogoutManager
     {
         if (!$this->hasService($serviceKey)) {
-            throw new \RuntimeException(
+            throw InvalidArgument::reason(
                 sprintf('Can not add logout handler with an unknown service key %s', $serviceKey)
             );
         }
@@ -44,7 +45,7 @@ class LogoutManager
     final public function getHandlers(string $serviceKey): array
     {
         if (!$this->hasService($serviceKey)) {
-            throw new \RuntimeException(
+            throw InvalidArgument::reason(
                 sprintf('No logout service has been registered for service key %s', $serviceKey)
             );
         }
@@ -52,7 +53,7 @@ class LogoutManager
         $handlers = $this->services[$serviceKey];
 
         if (!$handlers) {
-            throw new \RuntimeException(
+            throw InvalidArgument::reason(
                 sprintf('No logout handler has been registered for service key %s', $serviceKey)
             );
         }

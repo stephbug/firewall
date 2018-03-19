@@ -10,6 +10,7 @@ use StephBug\Firewall\Factory\Builder;
 use StephBug\Firewall\Factory\Contracts\FirewallContext;
 use StephBug\Firewall\Factory\SecurityKeyContext;
 use StephBug\Firewall\Factory\UserProviders;
+use StephBug\SecurityModel\Application\Exception\InvalidArgument;
 use StephBug\SecurityModel\Application\Values\FirewallKey;
 
 class Manager
@@ -32,7 +33,7 @@ class Manager
     public function guard(string $name): Builder
     {
         if (!$this->hasFirewall($name)) {
-            throw new \RuntimeException(sprintf('no configuration defined for guard name %s', $name));
+            throw InvalidArgument::reason(sprintf('no configuration defined for guard name %s', $name));
         }
 
         return $this->guards[$name] ?? $this->guards[$name] = $this->resolve($name);
@@ -53,7 +54,7 @@ class Manager
         $context = $this->getConfig('context.' . $name) ?? $this->getConfig('context.default');
 
         if (!$context) {
-            throw new \RuntimeException(sprintf('Firewall context missing for firewall name %', $name));
+            throw InvalidArgument::reason(sprintf('Firewall context missing for firewall name %', $name));
         }
 
         return $this->app->make($context);

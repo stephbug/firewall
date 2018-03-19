@@ -7,6 +7,7 @@ namespace StephBug\Firewall\Factory\Bootstrap;
 use Illuminate\Contracts\Foundation\Application;
 use StephBug\Firewall\Factory\Builder;
 use StephBug\Firewall\Factory\Contracts\FirewallRegistry;
+use StephBug\SecurityModel\Application\Exception\InvalidArgument;
 use StephBug\SecurityModel\Guard\Authentication\AuthenticationProviders;
 
 class AuthenticationProvider implements FirewallRegistry
@@ -32,7 +33,7 @@ class AuthenticationProvider implements FirewallRegistry
         $bootstrapped = $make($builder);
 
         if (!$authenticationProviders = $builder->authenticationProviders()) {
-            throw new \RuntimeException('No authentication providers has been registered');
+            throw InvalidArgument::reason('No authentication providers has been registered');
         }
 
         foreach ($authenticationProviders as $provider) {
