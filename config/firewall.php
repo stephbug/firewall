@@ -26,5 +26,7 @@ return [
 
     'user_providers' => [
         //'alias' => 'serviceId'
-    ]
+    ],
+
+    'strategy' => \StephBug\Firewall\Factory\Strategy\RouteMatchedStrategy::class
 ];

@@ -49,7 +49,11 @@ class FirewallServiceProvider extends ServiceProvider
 
         $this->app->singleton(SessionContext::class);
 
-        $this->app->singleton(Firewall::class);
+        $this->app->singleton(Firewall::class, function (Application $app) {
+            return new Firewall(
+                $app->make($app->make('config')->get('firewall.strategy'))
+            );
+        });
     }
 
     public function provides(): array

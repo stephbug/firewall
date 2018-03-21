@@ -4,38 +4,25 @@ declare(strict_types=1);
 
 namespace StephBug\Firewall\Application\Http\Middleware;
 
-use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Events\RouteMatched;
-use StephBug\Firewall\ServiceRegistry;
+use StephBug\Firewall\Factory\Strategy\FirewallStrategy;
 
 class Firewall
 {
     /**
-     * @var ServiceRegistry
+     * @var FirewallStrategy
      */
-    private $registry;
+    private $strategy;
 
-    /**
-     * @var Dispatcher
-     */
-    private $eventDispatcher;
-
-    public function __construct(ServiceRegistry $registry, Dispatcher $eventDispatcher)
+    public function __construct(FirewallStrategy $strategy)
     {
-        $this->registry = $registry;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->strategy = $strategy;
     }
 
     public function handle(Request $request, \Closure $next)
     {
-        $this->eventDispatcher->listen(RouteMatched::class, [$this, 'onEvent']);
+        $this->strategy->delegateHandling($request);
 
         return $next($request);
-    }
-
-    public function onEvent(RouteMatched $event): void
-    {
-        $this->registry->register($event->request, $event->route);
     }
 }
