@@ -13,6 +13,7 @@ use StephBug\Firewall\Factory\Factory;
 use StephBug\Firewall\Factory\LogoutManager;
 use StephBug\Firewall\Factory\RecallerManager;
 use StephBug\Firewall\Manager;
+use StephBug\Firewall\Processor;
 
 class FirewallServiceProvider extends ServiceProvider
 {
@@ -39,11 +40,18 @@ class FirewallServiceProvider extends ServiceProvider
             'config'
         );
 
+        $this->app->bind(Processor::class, function (Application $app) {
+            return new Processor(
+                new Pipeline($app),
+                $app->make('config')->get('firewall.bootstraps', [])
+            );
+        });
+
         $this->app->bind(Factory::class, function (Application $app) {
             return new Factory(
                 $app->make(Manager::class),
-                new Pipeline($app),
-                $app->make('config')->get('firewall.bootstraps', [])
+                $app->make(Processor::class),
+                $map = []
             );
         });
 

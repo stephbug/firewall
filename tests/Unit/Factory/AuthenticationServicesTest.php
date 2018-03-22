@@ -21,7 +21,6 @@ class AuthenticationServicesTest extends TestCase
         $one->expects($this->once())->method('position')->willReturn('form');
 
         $services = [$one];
-
         $collection = new AuthenticationServices($services);
 
         $this->assertEquals($one, $collection->filter('form')->first());

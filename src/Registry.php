@@ -14,7 +14,7 @@ use StephBug\Firewall\Application\Exception\DebugFirewall;
 use StephBug\Firewall\Factory\Factory;
 use StephBug\SecurityModel\Application\Exception\InvalidArgument;
 
-class ServiceRegistry
+class Registry
 {
     /**
      * @var Application

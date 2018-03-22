@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace StephBug\Firewall\Factory;
 
 use Illuminate\Http\Request;
-use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Collection;
 use StephBug\Firewall\Manager;
+use StephBug\Firewall\Processor;
 
 class Factory
 {
@@ -17,25 +17,27 @@ class Factory
     private $manager;
 
     /**
-     * @var Pipeline
+     * @var Processor
      */
-    private $pipeline;
+    private $processor;
 
     /**
      * @var array
      */
-    private $bootstraps;
+    private $map;
 
-    public function __construct(Manager $manager, Pipeline $pipeline, array $bootstraps)
+    public function __construct(Manager $manager, Processor $processor, array $map = [])
     {
         $this->manager = $manager;
-        $this->pipeline = $pipeline;
-        $this->bootstraps = $bootstraps;
+        $this->processor = $processor;
+        $this->map = $map;
     }
 
     public function raise(Collection $middleware, Request $request): Collection
     {
-        return $this->process($this->createAuthenticationService($middleware), $request);
+        $services = $this->createAuthenticationService($middleware);
+
+        return $this->processor->process($services, $request);
     }
 
     private function createAuthenticationService(Collection $collection): Collection
@@ -51,18 +53,5 @@ class Factory
             });
 
         return $services;
-    }
-
-    private function process(Collection $services, Request $request): Collection
-    {
-        return $services->map(function (Builder $builder) use ($request) {
-            return $this->pipeline
-                ->via('compose')
-                ->through($this->bootstraps)
-                ->send($builder)
-                ->then(function () use ($builder) {
-                    return $builder->middleware();
-                });
-        });
     }
 }

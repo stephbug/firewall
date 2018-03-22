@@ -6,6 +6,10 @@ return [
         //'middlewareGroupName' => [ $serviceKey =>  $factory/$middleware]
     ],
 
+    'map' => [
+
+    ],
+
     'bootstraps' => [
 
         \StephBug\Firewall\Factory\Bootstrap\AuthenticationProvider::class,

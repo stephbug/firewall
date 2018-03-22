@@ -7,12 +7,12 @@ namespace StephBug\Firewall\Factory\Strategy;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Events\RouteMatched;
-use StephBug\Firewall\ServiceRegistry;
+use StephBug\Firewall\Registry;
 
 class RouteMatchedStrategy implements FirewallStrategy
 {
     /**
-     * @var ServiceRegistry
+     * @var Registry
      */
     private $registry;
 
@@ -21,7 +21,7 @@ class RouteMatchedStrategy implements FirewallStrategy
      */
     private $events;
 
-    public function __construct(ServiceRegistry $registry, Dispatcher $events)
+    public function __construct(Registry $registry, Dispatcher $events)
     {
         $this->registry = $registry;
         $this->events = $events;
