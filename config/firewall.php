@@ -3,12 +3,17 @@
 return [
 
     'services' => [
-        'front' => [
-            'factories' => [],
-            'map' => [
-                'service_key' => 'request_matcher'
-            ]
-        ]
+
+        'firewall_name' => [
+
+            'context' => 'firewall context',
+
+            /**
+             * [service key, service factory|middleware, request matcher]
+             */
+            'map' => [],
+
+        ],
     ],
 
     'bootstraps' => [
@@ -24,13 +29,8 @@ return [
         \StephBug\Firewall\Factory\Bootstrap\FirewallExceptionHandler::class
     ],
 
-    'context' => [
-
-        'default' => \StephBug\Firewall\Factory\Context\DefaultFirewallContext::class
-    ],
-
     'user_providers' => [
-        //'alias' => 'serviceId'
+        /* provider_alias => user_provider_id */
     ],
 
     'strategy' => \StephBug\Firewall\Factory\Strategy\RouteMatchedStrategy::class

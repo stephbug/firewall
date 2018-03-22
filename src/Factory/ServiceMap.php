@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use StephBug\Firewall\Factory\Contracts\AuthenticationServiceFactory;
 
-class FirewallMap
+class ServiceMap
 {
     /**
      * @var Collection

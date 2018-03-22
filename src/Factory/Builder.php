@@ -12,7 +12,7 @@ use StephBug\Firewall\Factory\Payload\PayloadFactory;
 class Builder
 {
     /**
-     * @var FirewallMap
+     * @var ServiceMap
      */
     private $services;
 
@@ -41,7 +41,7 @@ class Builder
      */
     private $request;
 
-    public function __construct(FirewallMap $services,
+    public function __construct(ServiceMap $services,
                                 FirewallContext $context,
                                 UserProviders $userProviders,
                                 SecurityKeyContext $contextKey)
@@ -58,7 +58,7 @@ class Builder
         ($this->aggregate)($factory);
     }
 
-    public function getServices(): Collection
+    public function services(): Collection
     {
         return $this->services->matches($this->request);
     }

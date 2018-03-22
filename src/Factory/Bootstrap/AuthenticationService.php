@@ -25,7 +25,7 @@ class AuthenticationService implements FirewallRegistry
     public function compose(Builder $builder, \Closure $make)
     {
         $builder
-            ->getServices()
+            ->services()
             ->map(function (AuthenticationServiceFactory $serviceFactory) use ($builder) {
                 $builder($serviceFactory->create(
                     $this->registerService($builder, $serviceFactory->userProviderKey())

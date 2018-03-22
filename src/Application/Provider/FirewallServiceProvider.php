@@ -50,8 +50,7 @@ class FirewallServiceProvider extends ServiceProvider
         $this->app->bind(Factory::class, function (Application $app) {
             return new Factory(
                 $app->make(Manager::class),
-                $app->make(Processor::class),
-                $map = []
+                $app->make(Processor::class)
             );
         });
 
