@@ -33,7 +33,7 @@ class Processor
             return $this->pipeline
                 ->via('compose')
                 ->through($this->bootstraps)
-                ->send($builder)
+                ->send($builder->setRequest($request))
                 ->then(function () use ($builder) {
                     return $builder->middleware();
                 });

@@ -11,52 +11,18 @@ use StephBug\Firewall\Factory\Contracts\AuthenticationServiceFactory;
 class AuthenticationServices
 {
     /**
-     * @var array
+     * @var FirewallMap
      */
-    private $services;
+    private $firewallMap;
 
-    /**
-     * @var Request
-     */
-    private $request;
-
-    public function __construct(array $services = null, Request $request = null)
+    public function __construct(FirewallMap $firewallMap)
     {
-        $this->services = new Collection($services ?? []);
-        $this->request = $request;
+
+        $this->firewallMap = $firewallMap;
     }
 
-    public function add(string $serviceKey, AuthenticationServiceFactory $serviceFactory): self
+    public function map(Request $request): Collection
     {
-        $this->services->put($serviceKey, $serviceFactory);
 
-        return $this;
-    }
-
-    public function filter(string $position): Collection
-    {
-        return $this->filterByMatcher($this->filterByPosition($position));
-    }
-
-    protected function filterByPosition(string $position): Collection
-    {
-        return $this->services->filter(function (AuthenticationServiceFactory $serviceFactory) use ($position) {
-            return $position === $serviceFactory->position();
-        });
-    }
-
-    protected function filterByMatcher(Collection $services): Collection
-    {
-        if ($this->request) {
-            return $services->filter(function (AuthenticationServiceFactory $serviceFactory) {
-                if ($matcher = $serviceFactory->matcher()) {
-                    return $serviceFactory->matcher()->matches($this->request);
-                }
-
-                return true;
-            });
-        }
-
-        return $services;
     }
 }

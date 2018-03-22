@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace StephBug\Firewall;
 
 use Illuminate\Contracts\Foundation\Application;
-use StephBug\Firewall\Factory\AuthenticationServices;
 use StephBug\Firewall\Factory\Builder;
 use StephBug\Firewall\Factory\Contracts\FirewallContext;
+use StephBug\Firewall\Factory\FirewallMap;
 use StephBug\Firewall\Factory\SecurityKeyContext;
 use StephBug\Firewall\Factory\UserProviders;
 use StephBug\SecurityModel\Application\Exception\InvalidArgument;
@@ -65,17 +65,19 @@ class Manager
         return new UserProviders($this->getConfig('user_providers'));
     }
 
-    protected function resolveFactories(string $name): AuthenticationServices
+    protected function resolveFactories(string $name): FirewallMap
     {
-        $services = $this->getConfig('services.' . $name, []);
+        $services = $this->getConfig('services.' . $name . '.factories', []);
 
-        $factories = new AuthenticationServices();
-
-        foreach ($services as $serviceKey => $serviceId) {
-            $factories->add($serviceKey, $this->app->make($serviceId));
+        $auth = [];
+        foreach ($services as $serviceId) {
+            $auth[] = $this->app->make($serviceId);
         }
 
-        return $factories;
+        $mapConfig = $this->getConfig('services.' . $name . '.map', []);
+        $map = new FirewallMap(collect($auth), $mapConfig);
+
+        return $map;
     }
 
     public function hasFirewall(string $name): bool

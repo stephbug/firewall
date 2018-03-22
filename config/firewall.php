@@ -3,11 +3,12 @@
 return [
 
     'services' => [
-        //'middlewareGroupName' => [ $serviceKey =>  $factory/$middleware]
-    ],
-
-    'map' => [
-
+        'front' => [
+            'factories' => [],
+            'map' => [
+                'service_key' => 'request_matcher'
+            ]
+        ]
     ],
 
     'bootstraps' => [

@@ -21,16 +21,10 @@ class Factory
      */
     private $processor;
 
-    /**
-     * @var array
-     */
-    private $map;
-
-    public function __construct(Manager $manager, Processor $processor, array $map = [])
+    public function __construct(Manager $manager, Processor $processor)
     {
         $this->manager = $manager;
         $this->processor = $processor;
-        $this->map = $map;
     }
 
     public function raise(Collection $middleware, Request $request): Collection

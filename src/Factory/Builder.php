@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace StephBug\Firewall\Factory;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use StephBug\Firewall\Factory\Contracts\FirewallContext;
 use StephBug\Firewall\Factory\Payload\PayloadFactory;
@@ -11,7 +12,7 @@ use StephBug\Firewall\Factory\Payload\PayloadFactory;
 class Builder
 {
     /**
-     * @var AuthenticationServices
+     * @var FirewallMap
      */
     private $services;
 
@@ -35,7 +36,12 @@ class Builder
      */
     private $aggregate;
 
-    public function __construct(AuthenticationServices $services,
+    /**
+     * @var Request
+     */
+    private $request;
+
+    public function __construct(FirewallMap $services,
                                 FirewallContext $context,
                                 UserProviders $userProviders,
                                 SecurityKeyContext $contextKey)
@@ -52,9 +58,9 @@ class Builder
         ($this->aggregate)($factory);
     }
 
-    public function getServices(string $position): Collection
+    public function getServices(): Collection
     {
-        return $this->services->filter($position);
+        return $this->services->matches($this->request);
     }
 
     public function context(): FirewallContext
@@ -80,6 +86,13 @@ class Builder
     public function entrypoints(): array
     {
         return $this->aggregate->entrypoints();
+    }
+
+    public function setRequest(Request $request): Builder
+    {
+        $this->request = $request;
+
+        return $this;
     }
 
     final public function middleware(): array
