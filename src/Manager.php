@@ -51,7 +51,7 @@ class Manager
 
     protected function resolveFirewallContext(string $name): FirewallContext
     {
-        $context = $this->getConfig('context.' . $name) ?? $this->getConfig('context.default');
+        $context = $this->getConfig('services.' .$name . '.context');
 
         if (!$context) {
             throw InvalidArgument::reason(sprintf('Firewall context missing for firewall name %', $name));
@@ -67,20 +67,18 @@ class Manager
 
     protected function resolveFactories(string $name): ServiceMap
     {
-        $services = $this->getConfig('services.' . $name . '.factories', []);
-        $services = array_map(function ($factory) {
-            return $this->app->make($factory);
-        }, $services);
+        $config = $this->getConfig('services.' . $name . '.map', []);
 
-        $mapConfig = $this->getConfig('services.' . $name . '.map', []);
-        foreach ($mapConfig as $mapKey => &$mapMatcher) {
-            if (is_string($mapMatcher)) {
-                $mapMatcher = $this->app->make($mapMatcher);
-            }
+        $factories = [];
+        $map = [];
+
+        foreach ($config as $services) {
+            [$serviceKey, $factory, $matcher] = $services;
+            $factories[] = $this->app->make($factory);
+            $map []= [$serviceKey, is_string($matcher) ? $this->app->make($matcher) : $matcher];
         }
-        $map = new ServiceMap(collect($services), $mapConfig);
 
-        return $map;
+        return new ServiceMap(collect($factories), $map);
     }
 
     public function hasFirewall(string $name): bool

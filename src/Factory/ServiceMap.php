@@ -30,10 +30,12 @@ class ServiceMap
     {
         $mapped = new Collection();
 
-        foreach ($this->map as $serviceKey => $requestMatcher) {
-            $this->services->each(function (AuthenticationServiceFactory $factory) use ($mapped, $serviceKey, $requestMatcher, $request) {
-                if ($factory->serviceKey() === $serviceKey) {
-                    if (null === $requestMatcher || true === $requestMatcher || $requestMatcher->matches($request)) {
+        foreach ($this->map as $serviceKey => $service) {
+            $this->services->each(function (AuthenticationServiceFactory $factory) use ($mapped,$request, $service) {
+                [$serviceKey, $requestMatcher] = $service;
+
+                if ($factory->serviceKey() === $serviceKey && $requestMatcher) {
+                    if (true === $requestMatcher || $requestMatcher->matches($request)) {
                         $mapped->push($factory);
                     }
                 }
