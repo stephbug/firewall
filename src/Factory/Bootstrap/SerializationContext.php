@@ -12,8 +12,8 @@ use StephBug\Firewall\Factory\Payload\PayloadFactory;
 use StephBug\Firewall\Factory\SecurityKeyContext;
 use StephBug\SecurityModel\Application\Http\Event\ContextEvent;
 use StephBug\SecurityModel\Application\Http\Firewall\ContextFirewall;
-use StephBug\SecurityModel\Application\Values\SecurityKey;
-use StephBug\SecurityModel\Application\Values\UserProviders;
+use StephBug\SecurityModel\Application\Values\Providers\UserProviders;
+use StephBug\SecurityModel\Application\Values\Security\SecurityKey;
 use StephBug\SecurityModel\Guard\Guard;
 
 class SerializationContext implements FirewallRegistry

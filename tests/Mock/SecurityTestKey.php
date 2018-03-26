@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace StephBugTest\Firewall\Mock;
 
 use StephBug\SecurityModel\Application\Values\Contract\SecurityValue;
-use StephBug\SecurityModel\Application\Values\SecurityKey;
+use StephBug\SecurityModel\Application\Values\Security\SecurityKey;
 
 class SecurityTestKey extends SecurityKey
 {

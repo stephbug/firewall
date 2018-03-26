@@ -10,7 +10,7 @@ use StephBug\Firewall\Factory\Payload\PayloadFactory;
 use StephBug\Firewall\Factory\Payload\PayloadService;
 use StephBug\Firewall\Factory\RecallerManager;
 use StephBug\SecurityModel\Application\Exception\InvalidArgument;
-use StephBug\SecurityModel\Application\Values\RecallerKey;
+use StephBug\SecurityModel\Application\Values\Security\RecallerKey;
 use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 
 abstract class RecallerAuthenticationFactory implements AuthenticationServiceFactory

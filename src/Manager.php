@@ -11,7 +11,7 @@ use StephBug\Firewall\Factory\ServiceMap;
 use StephBug\Firewall\Factory\SecurityKeyContext;
 use StephBug\Firewall\Factory\UserProviders;
 use StephBug\SecurityModel\Application\Exception\InvalidArgument;
-use StephBug\SecurityModel\Application\Values\FirewallKey;
+use StephBug\SecurityModel\Application\Values\Security\FirewallKey;
 
 class Manager
 {

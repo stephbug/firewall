@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace StephBug\Firewall\Factory\Payload;
 
 use StephBug\Firewall\Factory\Contracts\FirewallContext;
-use StephBug\SecurityModel\Application\Values\SecurityKey;
+use StephBug\SecurityModel\Application\Values\Security\SecurityKey;
 
 class PayloadService
 {

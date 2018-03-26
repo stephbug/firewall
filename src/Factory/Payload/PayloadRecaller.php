@@ -6,7 +6,6 @@ namespace StephBug\Firewall\Factory\Payload;
 
 class PayloadRecaller
 {
-
     /**
      * @var PayloadService
      */
