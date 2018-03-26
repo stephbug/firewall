@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace StephBug\Firewall\Factory\Contracts;
 
-use StephBug\SecurityModel\Application\Values\AnonymousKey;
-use StephBug\SecurityModel\Application\Values\RecallerKey;
-use StephBug\SecurityModel\Application\Values\SecurityKey;
+use StephBug\SecurityModel\Application\Values\Security\AnonymousKey;
+use StephBug\SecurityModel\Application\Values\Security\RecallerKey;
+use StephBug\SecurityModel\Application\Values\Security\SecurityKey;
 
 interface FirewallContext
 {

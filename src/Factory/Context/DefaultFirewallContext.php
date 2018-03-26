@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace StephBug\Firewall\Factory\Context;
 
 use StephBug\Firewall\Factory\Contracts\FirewallContext;
-use StephBug\SecurityModel\Application\Values\AnonymousKey;
-use StephBug\SecurityModel\Application\Values\FirewallKey;
-use StephBug\SecurityModel\Application\Values\RecallerKey;
-use StephBug\SecurityModel\Application\Values\SecurityKey;
+use StephBug\SecurityModel\Application\Values\Security\AnonymousKey;
+use StephBug\SecurityModel\Application\Values\Security\FirewallKey;
+use StephBug\SecurityModel\Application\Values\Security\RecallerKey;
+use StephBug\SecurityModel\Application\Values\Security\SecurityKey;
 
 class DefaultFirewallContext implements FirewallContext
 {

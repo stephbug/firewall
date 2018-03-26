@@ -9,7 +9,7 @@ use StephBug\Firewall\Factory\Builder;
 use StephBug\Firewall\Factory\Contracts\FirewallRegistry;
 use StephBug\Firewall\Factory\Payload\PayloadFactory;
 use StephBug\SecurityModel\Application\Http\Firewall\AnonymousAuthenticationFirewall;
-use StephBug\SecurityModel\Application\Values\AnonymousKey;
+use StephBug\SecurityModel\Application\Values\Security\AnonymousKey;
 use StephBug\SecurityModel\Guard\Authentication\Providers\AnonymousAuthenticationProvider;
 use StephBug\SecurityModel\Guard\Guard;
 

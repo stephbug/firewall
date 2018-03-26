@@ -7,7 +7,7 @@ namespace StephBug\Firewall\Factory\Authentication;
 use Illuminate\Contracts\Foundation\Application;
 use StephBug\Firewall\Factory\Payload\PayloadService;
 use StephBug\SecurityModel\Application\Http\Firewall\RecallerAuthenticationFirewall;
-use StephBug\SecurityModel\Application\Values\RecallerKey;
+use StephBug\SecurityModel\Application\Values\Security\RecallerKey;
 use StephBug\SecurityModel\Guard\Authentication\Providers\RecallerAuthenticationProvider;
 use StephBug\SecurityModel\Guard\Guard;
 use StephBug\SecurityModel\User\UserChecker;
