@@ -67,11 +67,6 @@ class HttpBasicAuthenticationFactory implements AuthenticationServiceFactory
         return $id;
     }
 
-    public function position(): string
-    {
-        return 'http';
-    }
-
     public function matcher(): ?RequestMatcherInterface
     {
         return new HttpBasicAuthenticationRequest();

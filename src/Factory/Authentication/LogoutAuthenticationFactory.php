@@ -63,11 +63,6 @@ abstract class LogoutAuthenticationFactory implements AuthenticationServiceFacto
 
     abstract public function mirrorKey(): string;
 
-    public function position(): string
-    {
-        return 'logout';
-    }
-
     public function userProviderKey(): ?string
     {
         return null;

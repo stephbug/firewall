@@ -54,11 +54,6 @@ abstract class RecallerAuthenticationFactory implements AuthenticationServiceFac
             ->setProvider($this->registerProvider($payload, $recallerKey));
     }
 
-    public function position(): string
-    {
-        return 'remember_me';
-    }
-
     abstract public function mirrorKey(): string;
 
     abstract protected function registerFirewall(PayloadService $payload, string $recallerServiceId): string;
