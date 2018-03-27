@@ -16,7 +16,7 @@ class IdentifierPasswordRecallerFactory extends RecallerAuthenticationFactory
 {
     protected function registerFirewall(PayloadService $payload, string $recallerServiceId): string
     {
-        $id = 'firewall.' . $this->serviceKey() . '_listener.' . $payload->securityKey->value();
+        $id = 'firewall.' . $this->serviceKey() . '_firewall.' . $payload->securityKey->value();
 
         $this->app->bind($id, function (Application $app) use ($recallerServiceId) {
             return new RecallerAuthenticationFirewall(

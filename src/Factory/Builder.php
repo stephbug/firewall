@@ -88,15 +88,15 @@ class Builder
         return $this->aggregate->entrypoints();
     }
 
+    final public function middleware(): array
+    {
+        return $this->aggregate->firewall();
+    }
+
     public function setRequest(Request $request): Builder
     {
         $this->request = $request;
 
         return $this;
-    }
-
-    final public function middleware(): array
-    {
-        return $this->aggregate->firewall();
     }
 }

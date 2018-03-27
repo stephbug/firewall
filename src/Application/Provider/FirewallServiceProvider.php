@@ -46,8 +46,6 @@ class FirewallServiceProvider extends ServiceProvider
             'config'
         );
 
-        // $this->app->bind(Factory::class);
-
         $this->app->singleton(SessionContext::class);
 
         $this->app->singleton(Firewall::class, function (Application $app) {
