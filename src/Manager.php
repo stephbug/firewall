@@ -42,16 +42,16 @@ class Manager
     protected function resolve(string $name): Builder
     {
         return new Builder(
-            $this->resolveFactories($name),
-            $this->resolveFirewallContext($name),
-            $this->resolveUserProviders(),
+            $this->requireMap($name),
+            $this->resolveContext($name),
+            $this->userProviders(),
             new SecurityKeyContext(new FirewallKey($name))
         );
     }
 
-    protected function resolveFirewallContext(string $name): FirewallContext
+    protected function resolveContext(string $name): FirewallContext
     {
-        $context = $this->getConfig('services.' .$name . '.context');
+        $context = $this->getConfig('services.' . $name . '.context');
 
         if (!$context) {
             throw InvalidArgument::reason(sprintf('Firewall context missing for firewall name %', $name));
@@ -60,14 +60,18 @@ class Manager
         return $this->app->make($context);
     }
 
-    protected function resolveUserProviders(): UserProviders
+    protected function userProviders(): UserProviders
     {
         return new UserProviders($this->getConfig('user_providers'));
     }
 
-    protected function resolveFactories(string $name): FirewallMap
+    protected function requireMap(string $name): FirewallMap
     {
         $map = $this->getConfig('services.' . $name . '.map', []);
+
+        if (!$map) {
+            throw InvalidArgument::reason(sprintf('Register at least one service in map configuration %', $name));
+        }
 
         return new FirewallMap($this->app, $map);
     }

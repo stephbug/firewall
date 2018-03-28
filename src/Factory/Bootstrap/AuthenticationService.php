@@ -45,7 +45,7 @@ class AuthenticationService implements FirewallRegistry
         return (new PayloadFactory())->setFirewall($service);
     }
 
-    protected function buildService(Builder $builder, string $userProviderKey = null): PayloadService
+    private function buildService(Builder $builder, string $userProviderKey = null): PayloadService
     {
         $context = $builder->context();
 
