@@ -43,11 +43,16 @@ class Registry
         $services->each(function (array $middleware, string $name) {
             $firewallId = 'firewall.middleware.' . $name;
 
-            $this->app->bind($firewallId, function (Application $app) use ($middleware, $name) {
-                return new FirewallPipeline($app, $middleware, $name);
-            });
+            $this->registerFirewall($firewallId, $middleware, $name);
 
             $this->router->middlewareGroup($name, [$firewallId]);
+        });
+    }
+
+    protected function registerFirewall(string $firewallId, array $middleware, string $name): void
+    {
+        $this->app->bind($firewallId, function (Application $app) use ($middleware, $name) {
+            return new FirewallPipeline($app, $middleware, $name);
         });
     }
 }
