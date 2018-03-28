@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace StephBug\Firewall;
 
-use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
-use StephBug\Firewall\Application\Exception\DebugFirewall;
 use StephBug\Firewall\Factory\Factory;
-use StephBug\Firewall\Factory\FirewallPipeline;
-use StephBug\SecurityModel\Application\Exception\InvalidArgument;
+use StephBug\Firewall\Factory\Strategy\FirewallPipeline;
 
 class Registry
 {
@@ -44,27 +41,11 @@ class Registry
         $services = $this->factory->raise(new Collection($route->middleware()), $request);
 
         $services->each(function (array $middleware, string $name) {
-            //$middleware = $this->setExceptionHandler($middleware, $name);
+            $this->app->bind('firewall.middleware.' . $name, function (Application $app) use ($middleware, $name) {
+                return new FirewallPipeline($app, $middleware, $name);
+            });
 
-            $pipeline = new FirewallPipeline($name, $middleware, $this->app);
-
-            $this->router->middlewareGroup($name, [$pipeline]);
+            $this->router->middlewareGroup($name, ['firewall.pipeline.' . $name]);
         });
-    }
-
-    protected function setExceptionHandler(array $middleware, string $name): array
-    {
-        $exception = $this->app->make(array_pop($middleware));
-
-        if (!$exception instanceof DebugFirewall) {
-            throw InvalidArgument::reason(
-                sprintf('Last middleware of firewall %s must implement %s interface',
-                    $name, DebugFirewall::class)
-            );
-        }
-
-        $this->app->make(ExceptionHandler::class)->setFirewallHandler($exception);
-
-        return $middleware;
     }
 }
