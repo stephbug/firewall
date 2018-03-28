@@ -12,7 +12,7 @@ use StephBug\Firewall\Factory\Payload\PayloadFactory;
 class Builder
 {
     /**
-     * @var ServiceMap
+     * @var FirewallMap
      */
     private $services;
 
@@ -41,7 +41,7 @@ class Builder
      */
     private $request;
 
-    public function __construct(ServiceMap $services,
+    public function __construct(FirewallMap $services,
                                 FirewallContext $context,
                                 UserProviders $userProviders,
                                 SecurityKeyContext $contextKey)

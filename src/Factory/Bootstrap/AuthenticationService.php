@@ -8,6 +8,7 @@ use Illuminate\Contracts\Foundation\Application;
 use StephBug\Firewall\Factory\Builder;
 use StephBug\Firewall\Factory\Contracts\AuthenticationServiceFactory;
 use StephBug\Firewall\Factory\Contracts\FirewallRegistry;
+use StephBug\Firewall\Factory\Payload\PayloadFactory;
 use StephBug\Firewall\Factory\Payload\PayloadService;
 
 class AuthenticationService implements FirewallRegistry
@@ -24,12 +25,17 @@ class AuthenticationService implements FirewallRegistry
 
     public function compose(Builder $builder, \Closure $make)
     {
-        $builder
-            ->services()
-            ->map(function (AuthenticationServiceFactory $serviceFactory) use ($builder) {
-                $builder($serviceFactory->create(
-                    $this->registerService($builder, $serviceFactory->userProviderKey())
-                ));
+        $builder->services()
+            ->map(function ($serviceFactory) use ($builder) {
+                if ($serviceFactory instanceof AuthenticationServiceFactory) {
+                    $payload = $serviceFactory->create(
+                        $this->registerService($builder, $serviceFactory->userProviderKey())
+                    );
+                } else {
+                    $payload = (new PayloadFactory())->setFirewall($serviceFactory);
+                }
+
+                $builder($payload);
             });
 
         return $make($builder);
