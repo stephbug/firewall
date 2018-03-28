@@ -43,7 +43,7 @@ class FirewallMap
     /**
      * @param string|array $service
      * @param Request $request
-     * @return string|AuthenticationServiceFactory
+     * @return string|AuthenticationServiceFactory|null
      */
     protected function resolveIfFactory($service, Request $request)
     {
