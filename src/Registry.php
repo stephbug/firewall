@@ -41,11 +41,13 @@ class Registry
         $services = $this->factory->raise(new Collection($route->middleware()), $request);
 
         $services->each(function (array $middleware, string $name) {
-            $this->app->bind('firewall.middleware.' . $name, function (Application $app) use ($middleware, $name) {
+            $firewallId = 'firewall.middleware.' . $name;
+
+            $this->app->bind($firewallId, function (Application $app) use ($middleware, $name) {
                 return new FirewallPipeline($app, $middleware, $name);
             });
 
-            $this->router->middlewareGroup($name, ['firewall.pipeline.' . $name]);
+            $this->router->middlewareGroup($name, [$firewallId]);
         });
     }
 }
