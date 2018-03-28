@@ -25,23 +25,27 @@ class AuthenticationService implements FirewallRegistry
 
     public function compose(Builder $builder, \Closure $make)
     {
-        $builder->services()
-            ->map(function ($serviceFactory) use ($builder) {
-                if ($serviceFactory instanceof AuthenticationServiceFactory) {
-                    $payload = $serviceFactory->create(
-                        $this->registerService($builder, $serviceFactory->userProviderKey())
-                    );
-                } else {
-                    $payload = (new PayloadFactory())->setFirewall($serviceFactory);
-                }
+        $service = $builder->services();
 
-                $builder($payload);
-            });
+        $service->map(function ($service) use ($builder) {
+            $builder($this->buildFactory($builder, $service));
+        });
 
         return $make($builder);
     }
 
-    protected function registerService(Builder $builder, string $userProviderKey = null): PayloadService
+    protected function buildFactory(Builder $builder, $service): PayloadFactory
+    {
+        if ($service instanceof AuthenticationServiceFactory) {
+            $payload = $this->buildService($builder, $service->userProviderKey());
+
+            return $service->create($payload);
+        }
+
+        return (new PayloadFactory())->setFirewall($service);
+    }
+
+    protected function buildService(Builder $builder, string $userProviderKey = null): PayloadService
     {
         $context = $builder->context();
 
