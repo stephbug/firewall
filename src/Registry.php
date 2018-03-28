@@ -12,6 +12,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 use StephBug\Firewall\Application\Exception\DebugFirewall;
 use StephBug\Firewall\Factory\Factory;
+use StephBug\Firewall\Factory\FirewallPipeline;
 use StephBug\SecurityModel\Application\Exception\InvalidArgument;
 
 class Registry
@@ -40,13 +41,15 @@ class Registry
 
     public function register(Request $request, Route $route): void
     {
-        $this->factory
-            ->raise(new Collection($route->middleware()), $request)
-            ->each(function (array $middleware, string $name) {
-                $middleware = $this->setExceptionHandler($middleware, $name);
+        $services = $this->factory->raise(new Collection($route->middleware()), $request);
 
-                $this->router->middlewareGroup($name, $middleware);
-            });
+        $services->each(function (array $middleware, string $name) {
+            //$middleware = $this->setExceptionHandler($middleware, $name);
+
+            $pipeline = new FirewallPipeline($name, $middleware, $this->app);
+
+            $this->router->middlewareGroup($name, [$pipeline]);
+        });
     }
 
     protected function setExceptionHandler(array $middleware, string $name): array
