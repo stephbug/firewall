@@ -21,18 +21,13 @@ class FirewallServiceProvider extends ServiceProvider
      */
     protected $defer = true;
 
-    /**
-     * @var array
-     */
-    protected $singletons =[
-        Manager::class,
-        RecallerManager::class,
-        LogoutManager::class
-    ];
-
     public function register(): void
     {
         $this->mergeConfig();
+
+        $this->app->singleton(Manager::class);
+        $this->app->singleton(RecallerManager::class);
+        $this->app->singleton(LogoutManager::class);
 
         $this->app->bind(Factory::class, function (Application $app) {
             return new Factory(
