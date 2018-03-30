@@ -6,10 +6,10 @@ namespace StephBug\Firewall\Application\Http\Middleware;
 
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use StephBug\SecurityModel\Application\Http\Event\ContextEvent;
 use StephBug\SecurityModel\Guard\Authentication\Token\Storage\TokenStorage;
 use StephBug\SecurityModel\Guard\Authentication\TrustResolver;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\TerminableInterface;
 
@@ -59,9 +59,9 @@ class SessionContext implements TerminableInterface
         $sessionKey = $this->event->sessionKey();
 
         if (!$token || $this->trustResolver->isAnonymous($token)) {
-            $request->session()->forget($sessionKey);
+            $request->getSession()->remove($sessionKey);
         } else {
-            $request->session()->put($sessionKey, serialize($token));
+            $request->getSession()->set($sessionKey, serialize($token));
         }
     }
 

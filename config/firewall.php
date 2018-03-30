@@ -33,5 +33,5 @@ return [
         /* provider_alias => user_provider_id */
     ],
 
-    'strategy' => \StephBug\Firewall\Factory\Strategy\RouteMatchedStrategy::class
+    'strategy' => \StephBug\Firewall\Factory\Routing\Strategy\RouteMatchedStrategy::class
 ];

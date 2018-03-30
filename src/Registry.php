@@ -8,9 +8,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
-use Illuminate\Support\Collection;
-use StephBug\Firewall\Factory\Factory;
-use StephBug\Firewall\Factory\Strategy\FirewallPipeline;
+use StephBug\Firewall\Factory\Routing\Pipeline\FirewallPipeline;
 
 class Registry
 {
@@ -38,7 +36,7 @@ class Registry
 
     public function register(Request $request, Route $route): void
     {
-        $services = $this->factory->raise(new Collection($route->middleware()), $request);
+        $services = $this->factory->raise($route->middleware(), $request);
 
         $services->each(function (array $middleware, string $name) {
             $firewallId = 'firewall.middleware.' . $name;

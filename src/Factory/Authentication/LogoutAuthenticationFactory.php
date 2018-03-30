@@ -6,7 +6,7 @@ namespace StephBug\Firewall\Factory\Authentication;
 
 use Illuminate\Contracts\Foundation\Application;
 use StephBug\Firewall\Factory\Contracts\AuthenticationServiceFactory;
-use StephBug\Firewall\Factory\LogoutManager;
+use StephBug\Firewall\Factory\Manager\LogoutManager;
 use StephBug\Firewall\Factory\Payload\PayloadFactory;
 use StephBug\Firewall\Factory\Payload\PayloadService;
 use StephBug\SecurityModel\Application\Exception\InvalidArgument;

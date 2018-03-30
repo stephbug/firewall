@@ -6,10 +6,10 @@ namespace StephBug\Firewall;
 
 use Illuminate\Contracts\Foundation\Application;
 use StephBug\Firewall\Factory\Builder;
+use StephBug\Firewall\Factory\Builder\FirewallMap;
+use StephBug\Firewall\Factory\Builder\SecurityKeyContext;
+use StephBug\Firewall\Factory\Builder\UserProviders;
 use StephBug\Firewall\Factory\Contracts\FirewallContext;
-use StephBug\Firewall\Factory\FirewallMap;
-use StephBug\Firewall\Factory\SecurityKeyContext;
-use StephBug\Firewall\Factory\UserProviders;
 use StephBug\SecurityModel\Application\Exception\InvalidArgument;
 use StephBug\SecurityModel\Application\Values\Security\FirewallKey;
 

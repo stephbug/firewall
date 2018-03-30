@@ -7,7 +7,7 @@ namespace StephBug\Firewall\Factory\Bootstrap;
 use Illuminate\Contracts\Foundation\Application;
 use StephBug\Firewall\Factory\Builder;
 use StephBug\Firewall\Factory\Contracts\FirewallRegistry;
-use StephBug\Firewall\Factory\LogoutManager;
+use StephBug\Firewall\Factory\Manager\LogoutManager;
 
 class LogoutService implements FirewallRegistry
 {

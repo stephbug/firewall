@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace StephBug\Firewall\Factory;
+namespace StephBug\Firewall\Factory\Manager;
 
 use Illuminate\Contracts\Foundation\Application;
 use StephBug\SecurityModel\Application\Exception\InvalidArgument;

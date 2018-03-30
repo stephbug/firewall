@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace StephBug\Firewall\Factory\Strategy;
+namespace StephBug\Firewall\Factory\Routing\Strategy;
 
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\Request;

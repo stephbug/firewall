@@ -9,10 +9,10 @@ use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\ServiceProvider;
 use StephBug\Firewall\Application\Http\Middleware\Firewall;
 use StephBug\Firewall\Application\Http\Middleware\SessionContext;
-use StephBug\Firewall\Factory\LogoutManager;
-use StephBug\Firewall\Factory\RecallerManager;
+use StephBug\Firewall\Factory;
+use StephBug\Firewall\Factory\Manager\LogoutManager;
+use StephBug\Firewall\Factory\Manager\RecallerManager;
 use StephBug\Firewall\Manager;
-use StephBug\Firewall\Processor;
 
 class FirewallServiceProvider extends ServiceProvider
 {
@@ -21,18 +21,22 @@ class FirewallServiceProvider extends ServiceProvider
      */
     protected $defer = true;
 
+    /**
+     * @var array
+     */
+    protected $singletons =[
+        Manager::class,
+        RecallerManager::class,
+        LogoutManager::class
+    ];
+
     public function register(): void
     {
         $this->mergeConfig();
 
-        $this->app->singleton(Manager::class);
-
-        $this->app->singleton(RecallerManager::class);
-
-        $this->app->singleton(LogoutManager::class);
-
-        $this->app->bind(Processor::class, function (Application $app) {
-            return new Processor(
+        $this->app->bind(Factory::class, function (Application $app) {
+            return new Factory(
+                $app->make(Manager::class),
                 new Pipeline($app),
                 $app->make('config')->get('firewall.bootstraps', [])
             );
@@ -57,7 +61,7 @@ class FirewallServiceProvider extends ServiceProvider
 
     public function provides(): array
     {
-        return [Manager::class, RecallerManager::class, LogoutManager::class, Processor::class];
+        return [Manager::class, RecallerManager::class, LogoutManager::class, Factory::class];
     }
 
     protected function mergeConfig(): void

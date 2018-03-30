@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace StephBug\Firewall\Factory;
+namespace StephBug\Firewall\Factory\Builder;
 
 use StephBug\Firewall\Factory\Payload\PayloadFactory;
 

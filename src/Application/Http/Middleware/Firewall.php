@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace StephBug\Firewall\Application\Http\Middleware;
 
 use Illuminate\Http\Request;
-use StephBug\Firewall\Factory\Strategy\FirewallStrategy;
+use StephBug\Firewall\Factory\Routing\Strategy\FirewallStrategy;
 
 class Firewall
 {

@@ -6,37 +6,24 @@ namespace StephBug\Firewall\Factory\Bootstrap;
 
 use Illuminate\Contracts\Foundation\Application;
 use StephBug\Firewall\Factory\Builder;
+use StephBug\Firewall\Factory\Builder\SecurityKeyContext;
 use StephBug\Firewall\Factory\Contracts\FirewallContext;
-use StephBug\Firewall\Factory\Contracts\FirewallRegistry;
 use StephBug\Firewall\Factory\Payload\PayloadFactory;
-use StephBug\Firewall\Factory\SecurityKeyContext;
+use StephBug\Firewall\Factory\Payload\PayloadService;
 use StephBug\SecurityModel\Application\Http\Event\ContextEvent;
 use StephBug\SecurityModel\Application\Http\Firewall\ContextFirewall;
 use StephBug\SecurityModel\Application\Values\Providers\UserProviders;
-use StephBug\SecurityModel\Application\Values\Security\SecurityKey;
 use StephBug\SecurityModel\Guard\Guard;
 
-class SerializationContext implements FirewallRegistry
+class SerializationContext extends AuthenticationRegistry
 {
-    /**
-     * @var Application
-     */
-    private $app;
-
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
-
     public function compose(Builder $builder, \Closure $make)
     {
-        $context = $builder->context();
-        $contextKey = $builder->contextKey();
-
-        if (!$context->isStateless()) {
-            $serviceId = $this->getServiceId($context, $contextKey);
-
-            $this->registerService($serviceId, $builder->userProviders()->toArray(), $contextKey->key($context));
+        if (!$builder->context()->isStateless()) {
+            $serviceId = $this->registerService(
+                $this->buildService($builder),
+                $builder->userProviders()->toArray()
+            );
 
             $builder((new PayloadFactory())->setFirewall($serviceId));
         }
@@ -44,15 +31,19 @@ class SerializationContext implements FirewallRegistry
         return $make($builder);
     }
 
-    protected function registerService(string $serviceId, array $userProviders, SecurityKey $securityKey): void
+    protected function registerService(PayloadService $payload, array $userProviders): string
     {
-        $this->app->bind($serviceId, function (Application $app) use ($userProviders, $securityKey) {
+        $serviceId = 'firewall.context_' . $payload->securityKey->value();
+
+        $this->app->bind($serviceId, function (Application $app) use ($userProviders, $payload) {
             return new ContextFirewall(
                 $app->make(Guard::class),
                 $this->makeUserProviders($userProviders),
-                new ContextEvent($securityKey)
+                new ContextEvent($payload->securityKey)
             );
         });
+
+        return $serviceId;
     }
 
     protected function makeUserProviders(array $userProviders): UserProviders

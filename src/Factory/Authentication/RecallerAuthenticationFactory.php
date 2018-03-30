@@ -6,9 +6,9 @@ namespace StephBug\Firewall\Factory\Authentication;
 
 use Illuminate\Contracts\Foundation\Application;
 use StephBug\Firewall\Factory\Contracts\AuthenticationServiceFactory;
+use StephBug\Firewall\Factory\Manager\RecallerManager;
 use StephBug\Firewall\Factory\Payload\PayloadFactory;
 use StephBug\Firewall\Factory\Payload\PayloadService;
-use StephBug\Firewall\Factory\RecallerManager;
 use StephBug\SecurityModel\Application\Exception\InvalidArgument;
 use StephBug\SecurityModel\Application\Values\Security\RecallerKey;
 use Symfony\Component\HttpFoundation\RequestMatcherInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace StephBug\Firewall\Factory\Strategy;
+namespace StephBug\Firewall\Factory\Routing\Pipeline;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;

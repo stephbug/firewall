@@ -6,6 +6,10 @@ namespace StephBug\Firewall\Factory;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use StephBug\Firewall\Factory\Builder\Aggregate;
+use StephBug\Firewall\Factory\Builder\FirewallMap;
+use StephBug\Firewall\Factory\Builder\SecurityKeyContext;
+use StephBug\Firewall\Factory\Builder\UserProviders;
 use StephBug\Firewall\Factory\Contracts\FirewallContext;
 use StephBug\Firewall\Factory\Payload\PayloadFactory;
 
