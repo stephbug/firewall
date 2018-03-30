@@ -59,9 +59,9 @@ class SessionContext implements TerminableInterface
         $sessionKey = $this->event->sessionKey();
 
         if (!$token || $this->trustResolver->isAnonymous($token)) {
-            $request->getSession()->remove($sessionKey);
+            $request->session()->forget($sessionKey);
         } else {
-            $request->getSession()->set($sessionKey, serialize($token));
+            $request->session()->put($sessionKey, serialize($token));
         }
     }
 
