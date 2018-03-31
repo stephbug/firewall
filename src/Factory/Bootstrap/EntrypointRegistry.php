@@ -26,7 +26,7 @@ class EntrypointRegistry implements FirewallRegistry
 
             $serviceId = $this->determineEntrypointId($builder, $entrypoint);
 
-            $this->app->bind($serviceId, $entrypoint);
+            $this->app->bindIf($serviceId, $entrypoint);
 
             $builder->setDefaultEntrypointId($serviceId);
         }
