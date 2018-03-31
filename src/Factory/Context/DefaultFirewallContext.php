@@ -12,174 +12,109 @@ use StephBug\SecurityModel\Application\Values\Security\SecurityKey;
 
 class DefaultFirewallContext implements FirewallContext
 {
-    /**
-     * @var string
-     */
-    protected $securityKey;
-
-    /**
-     * @var string
-     */
-    protected $anonymousKey;
-
-    /**
-     * @var string
-     */
-    protected $userProviderId;
-
-    /**
-     * @var string
-     */
-    protected $entrypointId;
-
-    /**
-     * @var string
-     */
-    protected $unauthorizedId;
-
-    /**
-     * @var bool
-     */
-    protected $anonymous = false;
-
-    /**
-     * @var bool
-     */
-    protected $stateless = true;
-
-    /**
-     * @var bool
-     */
-    protected $allowToSwitch = false;
 
     /**
      * @var array
      */
-    protected $logout = [];
+    protected $attributes;
 
-    /**
-     * @var array
-     */
-    protected $recaller = [];
+    public function __construct(array $attributes = [])
+    {
+        if (empty($attributes)) {
+            $attributes = [
+                'anonymous' => false,
+                'stateless' => false,
+                'allowToSwitch' => true,
+                'securityKey' => 'default_security_key',
+                'recallerKey' => 'default_recaller_key',
+                'anonymousKey' => 'default_anonymous_key',
+                'userProviderId' => 'eloquent',
+                'entrypointId' => 'default_entry_point_id',
+                'unauthorizedId' => 'default_unauthorized_id',
+                'logout' => [],
+                'recaller' => []
+            ];
+        }
+
+        $this->attributes = $attributes;
+    }
 
     public function securityKey(): SecurityKey
     {
-        return new FirewallKey($this->securityKey);
-    }
-
-    public function setStateless(bool $stateless): FirewallContext
-    {
-        $this->stateless = $stateless;
-
-        return $this;
+        return new FirewallKey($this->attributes['securityKey']);
     }
 
     public function isStateless(): bool
     {
-        return $this->stateless;
-    }
-
-    public function setAnonymous(bool $anonymous): FirewallContext
-    {
-        $this->anonymous = $anonymous;
-
-        return $this;
+        return $this->attributes['stateless'];
     }
 
     public function isAnonymous(): bool
     {
-        return $this->anonymous;
+        return $this->attributes['anonymous'];
     }
 
-    public function setAnonymousKey(string $anonymousKey): FirewallContext
+    public function anonymousKey(): ?AnonymousKey
     {
-        $this->anonymousKey = $anonymousKey;
+        if ($this->isAnonymous()) {
+            return new AnonymousKey($this->attributes['anonymousKey']);
+        }
 
-        return $this;
-    }
-
-    public function anonymousKey(): AnonymousKey
-    {
-        return new AnonymousKey($this->anonymousKey);
+        return null;
     }
 
     public function userProviderId(): string
     {
-        return $this->userProviderId;
-    }
-
-    public function setEntrypointId(string $entrypointId): FirewallContext
-    {
-        $this->entrypointId = $entrypointId;
-
-        return $this;
+        return $this->attributes['userProviderId'];
     }
 
     public function entrypointId(): ?string
     {
-        return $this->entrypointId;
+        return $this->attributes['entrypointId'];
     }
 
     public function unauthorizedId(): ?string
     {
-        return $this->unauthorizedId;
-    }
-
-    public function setUnauthorizedId(string $unauthorizedId): FirewallContext
-    {
-        $this->unauthorizedId = $unauthorizedId;
-
-        return $this;
-    }
-
-    public function addLogout(string $serviceKey, array $payload): FirewallContext
-    {
-        $this->logout[$serviceKey] = $payload;
-
-        return $this;
+        return $this->attributes['unauthorizedId'];
     }
 
     public function hasLogoutKey(string $serviceKey): bool
     {
-        return isset($this->logout[$serviceKey]);
+        return isset($this->attributes['logout']) && isset($this->attributes['logout'][$serviceKey]);
     }
 
     public function logout(): array
     {
-        return $this->logout;
+        return $this->attributes['logout'] ?? [];
     }
 
     public function logoutByKey(string $serviceKey): ?array
     {
-        return $this->logout[$serviceKey] ?? null;
-    }
+        if ($this->hasLogoutKey($serviceKey)) {
+            return $this->attributes['logout'][$serviceKey];
+        }
 
-    public function addRecaller(string $serviceKey, string $recallerKey): FirewallContext
-    {
-        $this->recaller[$serviceKey] = new RecallerKey($recallerKey);
-
-        return $this;
+        return null;
     }
 
     public function hasRecaller(string $serviceKey): bool
     {
-        return isset($this->recaller[$serviceKey]);
+        return isset($this->attributes['recaller'][$serviceKey]);
     }
 
     public function recaller(string $serviceKey): ?RecallerKey
     {
-        return $this->recaller[$serviceKey] ?? null;
+        if ($this->hasRecaller($serviceKey)) {
+            $key = $this->attributes['recaller'][$serviceKey];
+
+            return new RecallerKey($key);
+        }
+
+        return null;
     }
 
     public function isAllowedToSwitch(): bool
     {
-        return $this->allowToSwitch;
-    }
-
-    public function setAllowToSwitch(bool $allowToSwitch): FirewallContext
-    {
-        $this->allowToSwitch = $allowToSwitch;
-
-        return $this;
+        return $this->attributes['allowToSwitch'];
     }
 }
