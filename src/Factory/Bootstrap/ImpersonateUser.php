@@ -6,12 +6,11 @@ namespace StephBug\Firewall\Factory\Bootstrap;
 
 use Illuminate\Contracts\Foundation\Application;
 use StephBug\Firewall\Factory\Builder;
-use StephBug\Firewall\Factory\Payload\PayloadFactory;
 use StephBug\Firewall\Factory\Payload\PayloadService;
 use StephBug\SecurityModel\Application\Http\Firewall\SwitchUserAuthenticationFirewall;
 use StephBug\SecurityModel\Application\Http\Request\SwitchUserAuthenticationRequest;
 use StephBug\SecurityModel\Guard\Authorization\Grantable;
-use StephBug\SecurityModel\Guard\Guard;
+use StephBug\SecurityModel\Guard\Contract\Guardable;
 
 class ImpersonateUser extends AuthenticationRegistry
 {
@@ -22,7 +21,7 @@ class ImpersonateUser extends AuthenticationRegistry
                 $this->buildService($builder)
             );
 
-            $builder((new PayloadFactory())->setFirewall($serviceId));
+            $this->registerFirewall($serviceId, $builder);
         }
 
         return $make($builder);
@@ -34,7 +33,7 @@ class ImpersonateUser extends AuthenticationRegistry
 
         $this->app->bind($serviceId, function (Application $app) use ($payload) {
             return new SwitchUserAuthenticationFirewall(
-                $app->make(Guard::class),
+                $app->make(Guardable::class),
                 $app->make(Grantable::class),
                 new SwitchUserAuthenticationRequest(),
                 $app->make($payload->userProviderId),

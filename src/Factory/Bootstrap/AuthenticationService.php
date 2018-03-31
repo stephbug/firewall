@@ -14,14 +14,14 @@ class AuthenticationService extends AuthenticationRegistry
     {
         $services = $builder->services();
 
-        $services->map(function ($service) use ($builder) {
-            $builder($this->buildFactory($builder, $service));
+        $services->each(function ($service) use ($builder) {
+            $builder($this->buildConditionalFactory($builder, $service));
         });
 
         return $make($builder);
     }
 
-    protected function buildFactory(Builder $builder, $service): PayloadFactory
+    protected function buildConditionalFactory(Builder $builder, $service): PayloadFactory
     {
         if ($service instanceof AuthenticationServiceFactory) {
             $payload = $this->buildService($builder, $service->userProviderKey());
@@ -29,6 +29,6 @@ class AuthenticationService extends AuthenticationRegistry
             return $service->create($payload);
         }
 
-        return (new PayloadFactory())->setFirewall($service);
+        return $this->buildFactory()->setFirewall($service);
     }
 }

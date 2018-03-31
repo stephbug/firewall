@@ -10,28 +10,16 @@ use StephBug\Firewall\Application\Exception\AuthorizationHandler;
 use StephBug\Firewall\Application\Exception\ContextualHandler;
 use StephBug\Firewall\Application\Exception\SecurityHandler;
 use StephBug\Firewall\Factory\Builder;
-use StephBug\Firewall\Factory\Contracts\FirewallExceptionRegistry;
-use StephBug\Firewall\Factory\Payload\PayloadFactory;
 use StephBug\SecurityModel\Guard\Authentication\Token\Storage\TokenStorage;
 use StephBug\SecurityModel\Guard\Authentication\TrustResolver;
 
-class FirewallExceptionHandler implements FirewallExceptionRegistry
+class FirewallExceptionHandler extends AuthenticationRegistry
 {
-    /**
-     * @var Application
-     */
-    private $app;
-
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
-
     public function compose(Builder $builder, \Closure $make)
     {
         $serviceId = $this->registerExceptionHandler($builder);
 
-        $builder((new PayloadFactory())->setFirewall($serviceId));
+        $this->registerFirewall($serviceId, $builder);
 
         if ($entrypoints = $builder->entrypoints()) {
             $this->whenResolvingExceptionHandler($serviceId, $entrypoints, $builder->defaultEntrypointId());
