@@ -10,6 +10,9 @@ class DefaultContext implements FirewallContext
 {
     use HasContext;
 
+    /**
+     * @var array
+     */
     protected $original = [
         'anonymous' => false,
         'stateless' => false,

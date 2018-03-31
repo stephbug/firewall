@@ -35,11 +35,13 @@ class RecallerManager
 
     public function make(PayloadRecaller $payload): string
     {
-        if ($this->hasService($payload->serviceKey)) {
-            return $this->getService($payload->serviceKey);
+        $key = $payload->serviceKey;
+
+        if ($this->hasService($key)) {
+            return $this->getService($key);
         }
 
-        return $this->services[$payload->serviceKey] = $this->createService($payload);
+        return $this->services[$key] = $this->createService($payload);
     }
 
     protected function createService(PayloadRecaller $payload): string
@@ -53,7 +55,7 @@ class RecallerManager
         return $recallerId;
     }
 
-    public function hasService(string $serviceKey)
+    public function hasService(string $serviceKey): bool
     {
         return isset($this->services[$serviceKey]);
     }

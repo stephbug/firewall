@@ -74,16 +74,16 @@ class FirewallExceptionHandler implements FirewallExceptionRegistry
 
     private function whenResolvingExceptionHandler(string $serviceId, array $entrypoints, string $entrypointId = null)
     {
+        /**
+         * when a specific listener is resolved and an entrypoint has been returned from
+         * an authentication service factory, we resolve this entrypoint and set it
+         * on his debug firewall handler
+         */
         foreach ($entrypoints as $entrypoint) {
             if ($entrypoint === $entrypointId) {
                 continue;
             }
 
-            /**
-             * when a specific listener is resolved and an entrypoint has been returned from
-             * an authentication service factory, we resolve this entrypoint and set it
-             * on the debug firewall handler
-             */
             $this->app->resolving($serviceId,
                 function (SecurityHandler $securityHandler, Application $app) use ($entrypoint) {
                     $securityHandler->setEntrypoint(

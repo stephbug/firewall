@@ -12,6 +12,8 @@ use StephBug\SecurityModel\Application\Http\Firewall\AccessControlFirewall;
 
 class AccessControl implements FirewallRegistry
 {
+    const SERVICE_ALIAS = 'firewall.access_control';
+
     /**
      * @var Application
      */
@@ -24,9 +26,9 @@ class AccessControl implements FirewallRegistry
 
     public function compose(Builder $builder, \Closure $make)
     {
-        $this->app->bind($serviceId = 'firewall.access_control', AccessControlFirewall::class);
+        $this->app->bind(static::SERVICE_ALIAS, AccessControlFirewall::class);
 
-        $builder((new PayloadFactory())->setFirewall($serviceId));
+        $builder((new PayloadFactory())->setFirewall(static::SERVICE_ALIAS));
 
         return $make($builder);
     }
