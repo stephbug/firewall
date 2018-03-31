@@ -9,6 +9,7 @@ use StephBug\Firewall\Factory\Payload\PayloadService;
 use StephBug\SecurityModel\Application\Http\Firewall\RecallerAuthenticationFirewall;
 use StephBug\SecurityModel\Application\Values\Security\RecallerKey;
 use StephBug\SecurityModel\Guard\Authentication\Providers\RecallerAuthenticationProvider;
+use StephBug\SecurityModel\Guard\Contract\Guardable;
 use StephBug\SecurityModel\Guard\Guard;
 use StephBug\SecurityModel\User\UserChecker;
 
@@ -20,7 +21,7 @@ class IdentifierPasswordRecallerFactory extends RecallerAuthenticationFactory
 
         $this->app->bind($id, function (Application $app) use ($recallerServiceId) {
             return new RecallerAuthenticationFirewall(
-                $app->make(Guard::class),
+                $app->make(Guardable::class),
                 $app->make($recallerServiceId)
             );
         });

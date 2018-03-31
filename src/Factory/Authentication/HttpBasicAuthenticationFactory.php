@@ -12,7 +12,7 @@ use StephBug\Firewall\Factory\Payload\PayloadService;
 use StephBug\SecurityModel\Application\Http\Firewall\HttpBasicAuthenticationFirewall;
 use StephBug\SecurityModel\Application\Http\Request\HttpBasicAuthenticationRequest;
 use StephBug\SecurityModel\Guard\Authentication\Providers\IdentifierPasswordAuthenticationProvider;
-use StephBug\SecurityModel\Guard\Guard;
+use StephBug\SecurityModel\Guard\Contract\Guardable;
 use StephBug\SecurityModel\User\UserChecker;
 use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 
@@ -41,7 +41,7 @@ class HttpBasicAuthenticationFactory implements AuthenticationServiceFactory
 
         $this->app->bind($id, function (Application $app) use ($payload) {
             return new HttpBasicAuthenticationFirewall(
-                $app->make(Guard::class),
+                $app->make(Guardable::class),
                 $this->matcher(),
                 $app->make($payload->context->entrypointId()),
                 $payload->securityKey

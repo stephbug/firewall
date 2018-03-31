@@ -51,7 +51,7 @@ class SessionContext implements TerminableInterface
 
     public function terminate(SymfonyRequest $request, Response $response)
     {
-        if (!$this->event) {
+        if (!$this->event || !$request instanceof Request) {
             return;
         }
 
