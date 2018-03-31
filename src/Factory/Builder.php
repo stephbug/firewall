@@ -45,6 +45,11 @@ class Builder
      */
     private $request;
 
+    /**
+     * @var string
+     */
+    private $defaultEntrypointId;
+
     public function __construct(FirewallMap $services,
                                 FirewallContext $context,
                                 UserProviders $userProviders,
@@ -85,6 +90,16 @@ class Builder
     public function authenticationProviders(): array
     {
         return $this->aggregate->providers();
+    }
+
+    public function setDefaultEntrypointId(string $entrypointId): void
+    {
+        $this->defaultEntrypointId = $entrypointId;
+    }
+
+    public function defaultEntrypointId(): ?string
+    {
+        return $this->defaultEntrypointId;
     }
 
     public function entrypoints(): array

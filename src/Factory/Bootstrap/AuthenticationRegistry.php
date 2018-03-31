@@ -29,7 +29,7 @@ abstract class AuthenticationRegistry implements FirewallRegistry
             $builder->contextKey()->key($context),
             $context,
             $builder->userProviders()->get($context, $userProviderKey),
-            $context->entrypointId()
+            $builder->defaultEntrypointId()
         );
     }
 }

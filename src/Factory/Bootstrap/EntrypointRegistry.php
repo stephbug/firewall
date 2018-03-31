@@ -22,21 +22,22 @@ class EntrypointRegistry implements FirewallRegistry
 
     public function compose(Builder $builder, \Closure $make)
     {
-        /**
-         * if a default entry point id exists on context
-         * we bind it to into the container only if it is not already bound
-         * we reset this default entrypoint id on context to make aware all concerned services
-         */
         if ($entrypoint = $builder->context()->entrypointId()) {
-            if (!$this->app->bound($entrypoint)) {
-                $serviceId = 'firewall.default_entrypoint.' . $builder->contextKey()->toString($builder->context());
 
-                $this->app->bind($serviceId, $entrypoint);
+            $serviceId = $this->determineEntrypointId($builder, $entrypoint);
 
-                $builder->context()->setEntrypointId($serviceId);
-            }
+            $this->app->bind($serviceId, $entrypoint);
+
+            $builder->setDefaultEntrypointId($serviceId);
         }
 
         return $make($builder);
+    }
+
+    private function determineEntrypointId(Builder $builder, string $entrypoint): string
+    {
+        return $this->app->bound($entrypoint)
+            ? $entrypoint
+            : 'firewall.default_entrypoint.' . $builder->contextKey()->toString($builder->context());
     }
 }
