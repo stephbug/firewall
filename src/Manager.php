@@ -9,7 +9,9 @@ use StephBug\Firewall\Factory\Builder;
 use StephBug\Firewall\Factory\Builder\FirewallMap;
 use StephBug\Firewall\Factory\Builder\SecurityKeyContext;
 use StephBug\Firewall\Factory\Builder\UserProviders;
+use StephBug\Firewall\Factory\Context\ImmutableContext;
 use StephBug\Firewall\Factory\Contracts\FirewallContext;
+use StephBug\Firewall\Factory\Contracts\ToImmutableContext;
 use StephBug\SecurityModel\Application\Exception\InvalidArgument;
 use StephBug\SecurityModel\Application\Values\Security\FirewallKey;
 
@@ -57,7 +59,13 @@ class Manager
             throw InvalidArgument::reason(sprintf('Firewall context missing for firewall name %', $name));
         }
 
-        return $this->app->make($context);
+        $context = $this->app->make($context);
+
+        if ($context instanceof ToImmutableContext) {
+            return new ImmutableContext($context->getAttributes());
+        }
+
+        return $context;
     }
 
     protected function userProviders(): UserProviders

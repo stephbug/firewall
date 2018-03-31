@@ -6,5 +6,5 @@ namespace StephBug\Firewall\Factory\Contracts;
 
 interface ToImmutableContext extends FirewallContext
 {
-    public function toImmutable(): FirewallContext;
+    public function toImmutable(): array;
 }

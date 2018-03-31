@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace StephBug\Firewall\Factory\Context;
 
 use StephBug\Firewall\Factory\Contracts\MutableContext as BaseMutable;
+use StephBug\Firewall\Factory\Contracts\ToImmutableContext;
 use StephBug\SecurityModel\Application\Exception\InvalidArgument;
 
-class MutableContext extends DefaultContext implements BaseMutable
+class MutableContext extends DefaultContext implements BaseMutable, ToImmutableContext
 {
     use HasMutableContext;
 
@@ -20,5 +21,10 @@ class MutableContext extends DefaultContext implements BaseMutable
         }
 
         $this->attributes[$name] = $value;
+    }
+
+    public function toImmutable(): array
+    {
+        return $this->getAttributes();
     }
 }

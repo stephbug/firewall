@@ -14,14 +14,14 @@ class DefaultContext implements FirewallContext
         'anonymous' => false,
         'stateless' => false,
         'securityKey' => 'default_security_key',
-        'recallerKey' => 'default_recaller_key',
+        'recallerKey' => null,
         'anonymousKey' => 'default_anonymous_key',
         'userProviderId' => 'eloquent',
         'entrypointId' => 'default_entry_point_id',
         'unauthorizedId' => 'default_unauthorized_id',
         'logout' => [],
         'recaller' => [],
-        'allowToSwitch' => true,
+        'allowToSwitch' => false,
     ];
 
     /**
