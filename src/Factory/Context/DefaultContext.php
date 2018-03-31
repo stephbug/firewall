@@ -14,7 +14,6 @@ class DefaultContext implements FirewallContext
         'anonymous' => false,
         'stateless' => false,
         'securityKey' => 'default_security_key',
-        'recallerKey' => null,
         'anonymousKey' => 'default_anonymous_key',
         'userProviderId' => 'eloquent',
         'entrypointId' => 'default_entry_point_id',

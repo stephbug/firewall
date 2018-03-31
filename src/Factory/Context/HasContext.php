@@ -71,13 +71,13 @@ trait HasContext
 
     public function hasRecaller(string $serviceKey): bool
     {
-        return isset($this->attributes['recaller']) && isset($this->attributes['recallerKey'][$serviceKey]);
+        return isset($this->attributes['recaller']) && isset($this->attributes['recaller'][$serviceKey]);
     }
 
     public function recaller(string $serviceKey): ?RecallerKey
     {
         if ($this->hasRecaller($serviceKey)) {
-            return new RecallerKey($this->attributes['recallerKey']);
+            return new RecallerKey($this->attributes['recaller'][$serviceKey]);
         }
 
         return null;

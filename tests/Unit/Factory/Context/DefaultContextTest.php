@@ -11,7 +11,7 @@ use StephBug\SecurityModel\Application\Values\Security\RecallerKey;
 use StephBug\SecurityModel\Application\Values\Security\SecurityKey;
 use StephBugTest\Firewall\Unit\TestCase;
 
-class DefaultFirewallContextTest extends TestCase
+class DefaultContextTest extends TestCase
 {
     /**
      * @test
@@ -76,7 +76,7 @@ class DefaultFirewallContextTest extends TestCase
 
         $this->assertInstanceOf(RecallerKey::class, $context->recaller('service_key'));
 
-        $this->assertEquals('default_recaller_key', $context->recaller('service_key')->value());
+        $this->assertEquals('recaller_key', $context->recaller('service_key')->value());
     }
 
     /**
@@ -115,7 +115,7 @@ class DefaultFirewallContextTest extends TestCase
                 'service_key' => ['payload']
             ],
             'recaller' => [
-                'service_key' => ['payload']
+                'service_key' => 'recaller_key'
             ],
         ];
     }
