@@ -34,7 +34,7 @@ class FirewallExceptionHandler implements FirewallExceptionRegistry
         $builder((new PayloadFactory())->setFirewall($serviceId));
 
         if ($entrypoints = $builder->entrypoints()) {
-            $this->whenResolvingExceptionHandler($serviceId, $entrypoints, $builder->context()->entrypointId());
+            $this->whenResolvingExceptionHandler($serviceId, $entrypoints, $builder->defaultEntrypointId());
         }
 
         return $make($builder);
@@ -62,7 +62,7 @@ class FirewallExceptionHandler implements FirewallExceptionRegistry
             $builder->contextKey()->key($builder->context()),
             $this->app->make(TrustResolver::class),
             $builder->context()->isStateless(),
-            $this->resolveHandler($builder->context()->entrypointId()),
+            $this->resolveHandler($builder->defaultEntrypointId()),
             $this->resolveHandler($builder->context()->unauthorizedId())
         );
     }
