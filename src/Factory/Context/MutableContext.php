@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace StephBug\Firewall\Factory\Context;
 
-use StephBug\Firewall\Factory\Contracts\MutableFirewallContext as BaseMutable;
+use StephBug\Firewall\Factory\Contracts\MutableContext as BaseMutable;
 use StephBug\SecurityModel\Application\Exception\InvalidArgument;
 
-class MutableFirewallContext extends DefaultFirewallContext implements BaseMutable
+class MutableContext extends DefaultContext implements BaseMutable
 {
     use HasMutableContext;
 
-    protected function setAttribute(string $name, $value): void
+    public function setAttribute(string $name, $value): void
     {
         if (!isset($this->attributes[$name])) {
             throw InvalidArgument::reason(

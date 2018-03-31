@@ -35,4 +35,6 @@ interface FirewallContext
     public function recaller(string $serviceKey): ?RecallerKey;
 
     public function isAllowedToSwitch(): bool;
+
+    public function getAttributes(): array;
 }
