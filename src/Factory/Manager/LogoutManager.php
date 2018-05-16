@@ -42,7 +42,7 @@ class LogoutManager
         return $this;
     }
 
-    final public function getHandlers(string $serviceKey): array
+    public function getResolvedHandlers(string $serviceKey): array
     {
         if (!$this->hasService($serviceKey)) {
             throw InvalidArgument::reason(
@@ -52,19 +52,24 @@ class LogoutManager
 
         $handlers = $this->services[$serviceKey];
 
-        if (!$handlers) {
+        if (!is_array($handlers) || empty($handlers)) {
             throw InvalidArgument::reason(
                 sprintf('No logout handler has been registered for service key %s', $serviceKey)
             );
         }
 
-        return array_map(function (string $handler) {
-            return $this->app->make($handler);
-        }, $handlers);
+        return $this->resolveHandlers($handlers);
     }
 
     public function hasService(string $serviceKey): bool
     {
         return isset($this->services[$serviceKey]);
+    }
+
+    private function resolveHandlers(array $handlers): array
+    {
+        return array_map(function (string $handler) {
+            return $this->app->make($handler);
+        }, $handlers);
     }
 }

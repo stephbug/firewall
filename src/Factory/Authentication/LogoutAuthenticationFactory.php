@@ -53,7 +53,7 @@ abstract class LogoutAuthenticationFactory implements AuthenticationServiceFacto
                 );
             }
 
-            foreach ($this->logoutManager->getHandlers($this->mirrorKey()) as $handler) {
+            foreach ($this->logoutManager->getResolvedHandlers($this->mirrorKey()) as $handler) {
                 $firewall->addHandler($handler);
             }
         });
