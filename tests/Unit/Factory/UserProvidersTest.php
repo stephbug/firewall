@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace StephBugTest\Firewall\Unit\Factory;
 
 use StephBug\Firewall\Factory\Contracts\FirewallContext;
-use StephBug\Firewall\Factory\UserProviders;
+use StephBug\Firewall\Factory\Builder\UserProviders;
 use StephBugTest\Firewall\Unit\TestCase;
 
 class UserProvidersTest extends TestCase

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace StephBugTest\Firewall\Unit\Factory;
 
 use StephBug\Firewall\Factory\Contracts\FirewallContext;
-use StephBug\Firewall\Factory\SecurityKeyContext;
+use StephBug\Firewall\Factory\Builder\SecurityKeyContext;
 use StephBugTest\Firewall\Mock\SecurityTestKey;
 use StephBugTest\Firewall\Unit\TestCase;
 
