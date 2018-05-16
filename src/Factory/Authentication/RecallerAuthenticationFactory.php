@@ -60,7 +60,6 @@ abstract class RecallerAuthenticationFactory implements AuthenticationServiceFac
 
     abstract protected function registerProvider(PayloadService $payload, RecallerKey $recallerKey): string;
 
-
     public function matcher(): ?RequestMatcherInterface
     {
         return null;
