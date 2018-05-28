@@ -8,7 +8,7 @@ use Illuminate\Contracts\Cookie\QueueingFactory;
 use Illuminate\Contracts\Foundation\Application;
 use StephBug\Firewall\Factory\Payload\PayloadRecaller;
 use StephBug\SecurityModel\Application\Exception\InvalidArgument;
-use StephBug\SecurityModel\Guard\Service\Recaller\CookieSecurity;
+use StephBug\SecurityModel\Guard\Service\Recaller\Encoder\CookieSecurity;
 use StephBug\SecurityModel\Guard\Service\Recaller\SimpleRecallerService;
 
 class RecallerManager
