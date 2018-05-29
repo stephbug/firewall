@@ -25,13 +25,13 @@ class FirewallPipeline
     /**
      * @var string
      */
-    private $name;
+    private $firewallName;
 
-    public function __construct(Application $app, array $middleware, string $name)
+    public function __construct(Application $app, array $middleware, string $firewallName)
     {
         $this->app = $app;
         $this->middleware = $middleware;
-        $this->name = $name;
+        $this->firewallName = $firewallName;
     }
 
     public function handle(Request $request, \Closure $next)
@@ -55,7 +55,7 @@ class FirewallPipeline
         if (!$exception instanceof DebugFirewall) {
             throw InvalidArgument::reason(
                 sprintf('Last middleware of firewall %s must implement %s interface',
-                    $this->name, DebugFirewall::class)
+                    $this->firewallName, DebugFirewall::class)
             );
         }
 

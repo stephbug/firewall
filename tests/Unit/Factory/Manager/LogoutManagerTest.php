@@ -66,7 +66,7 @@ class LogoutManagerTest extends TestCase
      * @test
      * @expectedException \StephBug\SecurityModel\Application\Exception\InvalidArgument
      */
-    public function it_raise_exception_when_adding_handler_to_an_unknwown_service_key(): void
+    public function it_raise_exception_when_adding_handler_to_an_unknown_service_key(): void
     {
         $m = new LogoutManager($this->getApplication());
         $this->assertFalse($m->hasService('bar'));

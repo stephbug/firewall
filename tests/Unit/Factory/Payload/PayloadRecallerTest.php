@@ -21,7 +21,7 @@ class PayloadRecallerTest extends TestCase
     /**
      * @test
      */
-    public function it_access_public_payload_service_key__property(): void
+    public function it_access_public_payload_service_key_property(): void
     {
         $this->assertEquals('foo', $this->payloadRecallerInstance()->serviceKey);
     }

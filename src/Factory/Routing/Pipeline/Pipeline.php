@@ -59,9 +59,6 @@ class Pipeline extends BasePipeline
             throw $exception;
         }
 
-        // wip report on global
-        logger('security exception', ['context' => $exception]);
-
         return $this->debug->handle($passable, $exception);
     }
 }
