@@ -6,12 +6,12 @@ namespace StephBug\Firewall\Application\Exception;
 
 use Illuminate\Http\Request;
 use StephBug\SecurityModel\Application\Exception\AuthenticationException;
-use StephBug\SecurityModel\Application\Exception\InvalidUserStatus;
 use StephBug\SecurityModel\Application\Http\Entrypoint\Entrypoint;
 use StephBug\SecurityModel\Application\Http\Response\Unauthorized;
 use StephBug\SecurityModel\Application\Values\Security\SecurityKey;
 use StephBug\SecurityModel\Guard\Authentication\Token\Storage\TokenStorage;
 use StephBug\SecurityModel\Guard\Authentication\TrustResolver;
+use StephBug\SecurityModel\User\Exception\InvalidUserStatus;
 use Symfony\Component\HttpFoundation\Response;
 
 class ContextualHandler

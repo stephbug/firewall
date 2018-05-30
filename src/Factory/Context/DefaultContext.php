@@ -31,7 +31,7 @@ class DefaultContext implements FirewallContext
      */
     protected $attributes;
 
-    public function __construct(array $attributes = [])
+    public function __construct(array $attributes = null)
     {
         $this->attributes = $attributes ?? $this->original;
     }

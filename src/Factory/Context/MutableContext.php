@@ -8,7 +8,7 @@ use StephBug\Firewall\Factory\Contracts\MutableContext as BaseMutable;
 use StephBug\Firewall\Factory\Contracts\ToImmutableContext;
 use StephBug\SecurityModel\Application\Exception\InvalidArgument;
 
-class MutableContext extends DefaultContext implements BaseMutable, ToImmutableContext
+final class MutableContext extends DefaultContext implements BaseMutable, ToImmutableContext
 {
     use HasMutableContext;
 
