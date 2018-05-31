@@ -6,6 +6,7 @@ namespace StephBug\Firewall\Factory\Manager;
 
 use Illuminate\Contracts\Foundation\Application;
 use StephBug\SecurityModel\Application\Exception\InvalidArgument;
+use StephBug\SecurityModel\Application\Values\Security\SecurityKey;
 
 class LogoutManager
 {
@@ -24,33 +25,38 @@ class LogoutManager
         $this->app = $app;
     }
 
-    public function setLogoutContext(array $payload): void
+    public function addLogoutContext(SecurityKey $securityKey, array $payload): void
     {
-        $this->services = $payload;
+        $key = $securityKey->value() . '.' . key($payload);
+        $values = array_values($payload);
+
+        $this->services = array_add($this->services, $key, $values);
     }
 
-    public function addHandler(string $handler, string $serviceKey): LogoutManager
+    public function addHandler(SecurityKey $securityKey, string $serviceKey, string $handler): LogoutManager
     {
-        if (!$this->hasService($serviceKey)) {
+        if (!$this->hasService($securityKey, $serviceKey)) {
             throw InvalidArgument::reason(
-                sprintf('Can not add logout handler with an unknown service key %s', $serviceKey)
+                sprintf('Can not add logout handler with an unknown service key %s and security key %s',
+                    $serviceKey, $securityKey->value())
             );
         }
 
-        $this->services[$serviceKey] = [$handler];
+        $this->services[$securityKey->value()][$serviceKey] = [$handler];
 
         return $this;
     }
 
-    public function getResolvedHandlers(string $serviceKey): array
+    public function getResolvedHandlers(SecurityKey $securityKey, string $serviceKey): array
     {
-        if (!$this->hasService($serviceKey)) {
+        if (!$this->hasService($securityKey, $serviceKey)) {
             throw InvalidArgument::reason(
-                sprintf('No logout service has been registered for service key %s', $serviceKey)
+                sprintf('No logout service has been registered for service key %s and security key %s',
+                    $serviceKey, $securityKey->value())
             );
         }
 
-        $handlers = $this->services[$serviceKey];
+        $handlers = array_filter($this->services[$securityKey->value()][$serviceKey]);
 
         if (!is_array($handlers) || empty($handlers)) {
             throw InvalidArgument::reason(
@@ -61,9 +67,11 @@ class LogoutManager
         return $this->resolveHandlers($handlers);
     }
 
-    public function hasService(string $serviceKey): bool
+    public function hasService(SecurityKey $securityKey, string $serviceKey): bool
     {
-        return isset($this->services[$serviceKey]);
+        $service = $this->services[$securityKey->value()][$serviceKey] ?? null;
+
+        return null !== $service;
     }
 
     private function resolveHandlers(array $handlers): array

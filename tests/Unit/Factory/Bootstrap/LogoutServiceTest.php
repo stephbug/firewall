@@ -7,6 +7,7 @@ namespace StephBugTest\Firewall\Unit\Factory\Bootstrap;
 use StephBug\Firewall\Factory\Bootstrap\LogoutService;
 use StephBug\Firewall\Factory\Manager\LogoutManager;
 use StephBugTest\Firewall\App\HasTestBuilder;
+use StephBugTest\Firewall\Mock\SecurityTestKey;
 use StephBugTest\Firewall\Unit\TestCase;
 
 class LogoutServiceTest extends TestCase
@@ -21,12 +22,13 @@ class LogoutServiceTest extends TestCase
         $manager = $this->getMockBuilder(LogoutManager::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $manager->expects($this->once())->method('setLogoutContext');
+        $manager->expects($this->once())->method('addLogoutContext');
 
         $bt = new LogoutService($this->getApplication(), $manager);
         $builder = $this->getFirewallBuilder();
 
         $this->context->expects($this->once())->method('logout')->willReturn(['foo']);
+        $this->keyContext->expects($this->once())->method('key')->willReturn(new SecurityTestKey('baz'));
 
         $response = $bt->compose($builder, $this->getResponseFromLastPipe('foobar'));
         $this->assertEquals('foobar', $response);
@@ -40,7 +42,8 @@ class LogoutServiceTest extends TestCase
         $manager = $this->getMockBuilder(LogoutManager::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $manager->expects($this->never())->method('setLogoutContext');
+        $manager->expects($this->never())->method('addLogoutContext');
+        $this->keyContext->expects($this->never())->method('key');
 
         $bt = new LogoutService($this->getApplication(), $manager);
         $builder = $this->getFirewallBuilder();

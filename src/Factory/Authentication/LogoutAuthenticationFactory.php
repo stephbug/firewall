@@ -10,6 +10,7 @@ use StephBug\Firewall\Factory\Manager\LogoutManager;
 use StephBug\Firewall\Factory\Payload\PayloadFactory;
 use StephBug\Firewall\Factory\Payload\PayloadService;
 use StephBug\SecurityModel\Application\Exception\InvalidArgument;
+use StephBug\SecurityModel\Application\Values\Security\SecurityKey;
 
 abstract class LogoutAuthenticationFactory implements AuthenticationServiceFactory
 {
@@ -39,21 +40,21 @@ abstract class LogoutAuthenticationFactory implements AuthenticationServiceFacto
 
         $firewallId = $this->registerFirewall($payload);
 
-        $this->addHandlersOnResolvingFirewall($firewallId);
+        $this->addHandlersOnResolvingFirewall($payload->securityKey, $firewallId);
 
         return $factory->setFirewall($firewallId);
     }
 
-    protected function addHandlersOnResolvingFirewall(string $firewallId): void
+    protected function addHandlersOnResolvingFirewall(SecurityKey $securityKey, string $firewallId): void
     {
-        $this->app->resolving($firewallId, function ($firewall) {
+        $this->app->resolving($firewallId, function ($firewall) use($securityKey) {
             if (!method_exists($firewall, 'addHandler')) {
                 throw InvalidArgument::reason(
                     sprintf('Missing method "addHandler" on class %', get_class($firewall))
                 );
             }
 
-            foreach ($this->logoutManager->getResolvedHandlers($this->mirrorKey()) as $handler) {
+            foreach ($this->logoutManager->getResolvedHandlers($securityKey, $this->mirrorKey()) as $handler) {
                 $firewall->addHandler($handler);
             }
         });
