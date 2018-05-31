@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace StephBugTest\Firewall\Unit\Factory;
+namespace StephBugTest\Firewall\Unit\Factory\Builder;
 
 use StephBug\Firewall\Factory\Contracts\FirewallContext;
 use StephBug\Firewall\Factory\Builder\SecurityKeyContext;
@@ -47,6 +47,24 @@ class SecurityKeyContextTest extends TestCase
         $context->expects($this->once())->method('isStateless')->willReturn(true);
 
         $this->assertEquals($key, $sec->key($context));
+    }
+
+    /**
+     * @test
+     */
+    public function it_return_key_from_context_when_it_differ_from_constructed_security_key_and_context_has_state(): void
+    {
+        // security key constructed is the firewall name and
+        // could be differ from security key set in a firewall context
+        // which is how we can share auth between firewall
+        $sec = new SecurityKeyContext($key = new SecurityTestKey('foo'));
+        $diffKey = new SecurityTestKey('bar');
+
+        $context = $this->getMockForAbstractClass(FirewallContext::class);
+        $context->expects($this->once())->method('isStateless')->willReturn(false);
+        $context->expects($this->exactly(2))->method('securityKey')->willReturn($diffKey);
+
+        $this->assertEquals($sec->key($context), $diffKey);
     }
 
     /**

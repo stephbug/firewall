@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace StephBugTest\Firewall\Unit\Factory;
+namespace StephBugTest\Firewall\Unit\Factory\Builder;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use StephBug\Firewall\Factory\Builder\Aggregate;

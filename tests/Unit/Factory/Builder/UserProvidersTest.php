@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace StephBugTest\Firewall\Unit\Factory;
+namespace StephBugTest\Firewall\Unit\Factory\Builder;
 
 use StephBug\Firewall\Factory\Contracts\FirewallContext;
 use StephBug\Firewall\Factory\Builder\UserProviders;
