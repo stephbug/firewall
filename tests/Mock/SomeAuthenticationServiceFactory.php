@@ -7,7 +7,7 @@ namespace StephBugTest\Firewall\Mock;
 use StephBug\Firewall\Factory\Contracts\AuthenticationServiceFactory;
 use StephBug\Firewall\Factory\Payload\PayloadFactory;
 use StephBug\Firewall\Factory\Payload\PayloadService;
-use Symfony\Component\HttpFoundation\RequestMatcherInterface;
+use StephBug\SecurityModel\Application\Http\Request\AuthenticationRequest;
 
 class SomeAuthenticationServiceFactory implements AuthenticationServiceFactory
 {
@@ -19,7 +19,7 @@ class SomeAuthenticationServiceFactory implements AuthenticationServiceFactory
            ->setEntrypoint('foo_entrypoint');
     }
 
-    public function matcher(): ?RequestMatcherInterface
+    public function matcher(): ?AuthenticationRequest
     {
         return null;
     }

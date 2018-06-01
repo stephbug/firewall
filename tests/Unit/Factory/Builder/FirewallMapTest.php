@@ -11,6 +11,7 @@ use StephBug\Firewall\Factory\Builder\FirewallMap;
 use StephBug\Firewall\Factory\Contracts\AuthenticationServiceFactory;
 use StephBug\Firewall\Factory\Payload\PayloadFactory;
 use StephBug\Firewall\Factory\Payload\PayloadService;
+use StephBug\SecurityModel\Application\Http\Request\AuthenticationRequest;
 use StephBugTest\Firewall\Unit\TestCase;
 use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 
@@ -118,7 +119,7 @@ class FirewallMapTest extends TestCase
                 return new PayloadFactory();
             }
 
-            public function matcher(): ?RequestMatcherInterface
+            public function matcher(): ?AuthenticationRequest
             {
                 return null;
             }
@@ -144,7 +145,7 @@ class FirewallMapTest extends TestCase
                 return new PayloadFactory();
             }
 
-            public function matcher(): ?RequestMatcherInterface
+            public function matcher(): ?AuthenticationRequest
             {
                 return null;
             }
