@@ -8,6 +8,7 @@ use Illuminate\Contracts\Cookie\QueueingFactory;
 use Illuminate\Contracts\Foundation\Application;
 use StephBug\Firewall\Factory\Payload\PayloadRecaller;
 use StephBug\SecurityModel\Application\Exception\InvalidArgument;
+use StephBug\SecurityModel\Application\Values\Security\SecurityKey;
 use StephBug\SecurityModel\Guard\Service\Recaller\Encoder\CookieSecurity;
 use StephBug\SecurityModel\Guard\Service\Recaller\SimpleRecallerService;
 
@@ -16,17 +17,17 @@ class RecallerManager
     /**
      * @var Application
      */
-    private $app;
+    protected $app;
 
     /**
      * @var array
      */
-    private $services = [];
+    protected $services = [];
 
     /**
      * @var array [$serviceKey => callable]
      */
-    private $callback = [];
+    protected $callback = [];
 
     public function __construct(Application $app)
     {
@@ -35,47 +36,59 @@ class RecallerManager
 
     public function make(PayloadRecaller $payload): string
     {
-        $key = $payload->serviceKey;
+        $securityKey = $payload->service->securityKey;
+        $serviceKey = $payload->serviceKey;
 
-        if ($this->hasService($key)) {
-            return $this->getService($key);
+        if ($this->hasService($securityKey, $serviceKey)) {
+            return $this->getService($securityKey, $serviceKey);
         }
 
-        return $this->services[$key] = $this->createService($payload);
+        return $this->services[$securityKey->value()][$serviceKey] = $this->createService($payload);
     }
 
     protected function createService(PayloadRecaller $payload): string
     {
-        $recallerId = isset($this->callback[$payload->serviceKey])
-            ? ($this->callback[$payload->serviceKey])($this->app)
-            : ($this->registerSimpleService($payload))($this->app);
+        $recallerId = ($this->determineCallbackService($payload))($this->app);
 
         $this->setRecallerOnResolvingListener($recallerId, $payload->firewallId);
 
         return $recallerId;
     }
 
-    public function hasService(string $serviceKey): bool
+    public function hasService(SecurityKey $securityKey, string $serviceKey): bool
     {
-        return isset($this->services[$serviceKey]);
+        return null !== ($this->services[$securityKey->value()][$serviceKey] ?? null);
     }
 
-    public function getService(string $serviceKey): string
+    public function getService(SecurityKey $securityKey, string $serviceKey): string
     {
-        if ($this->hasService($serviceKey)) {
-            return $this->services[$serviceKey];
+        if ($this->hasService($securityKey, $serviceKey)) {
+            return $this->services[$securityKey->value()][$serviceKey];
         }
 
         throw InvalidArgument::reason(
-            sprintf('No recaller service has been registered for service key %s', $serviceKey)
+            sprintf('No recaller service has been registered for service key %s and security key %s',
+                $serviceKey, $securityKey->value())
         );
     }
 
-    public function extend(string $serviceKey, callable $callback): RecallerManager
+    public function extend(string $securityKey, string $serviceKey, callable $callback): RecallerManager
     {
-        $this->callback[$serviceKey] = $callback;
+        $this->callback[$securityKey][$serviceKey] = $callback;
 
         return $this;
+    }
+
+    protected function determineCallbackService(PayloadRecaller $payload): callable
+    {
+        $securityKey = $payload->service->securityKey->value();
+        $serviceKey = $payload->serviceKey;
+
+        if (isset($this->callback[$securityKey][$serviceKey])) {
+            return $this->callback[$securityKey][$serviceKey];
+        }
+
+        return $this->registerSimpleService($payload);
     }
 
     protected function registerSimpleService(PayloadRecaller $payload): callable
