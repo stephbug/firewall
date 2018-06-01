@@ -2,18 +2,40 @@
 
 declare(strict_types=1);
 
-namespace StephBug\Firewall\Factory\Authentication;
+namespace StephBug\Firewall\Factory\Authentication\Generic;
 
 use Illuminate\Contracts\Foundation\Application;
+use StephBug\Firewall\Factory\Authentication\HasRecallerFactory;
+use StephBug\Firewall\Factory\Contracts\AuthenticationServiceFactory;
+use StephBug\Firewall\Factory\Manager\RecallerManager;
 use StephBug\Firewall\Factory\Payload\PayloadService;
 use StephBug\SecurityModel\Application\Http\Firewall\RecallerAuthenticationFirewall;
+use StephBug\SecurityModel\Application\Http\Request\AuthenticationRequest;
 use StephBug\SecurityModel\Application\Values\Security\RecallerKey;
 use StephBug\SecurityModel\Guard\Authentication\Providers\RecallerAuthenticationProvider;
 use StephBug\SecurityModel\Guard\Contract\Guardable;
 use StephBug\SecurityModel\User\UserChecker;
 
-class IdentifierPasswordRecallerFactory extends RecallerAuthenticationFactory
+class IdentifierPasswordRecallerFactory implements AuthenticationServiceFactory
 {
+    use HasRecallerFactory;
+
+    /**
+     * @var Application
+     */
+    private $app;
+
+    /**
+     * @var RecallerManager
+     */
+    private $recallerManager;
+
+    public function __construct(Application $app, RecallerManager $recallerManager)
+    {
+        $this->app = $app;
+        $this->recallerManager = $recallerManager;
+    }
+
     protected function registerFirewall(PayloadService $payload, string $recallerServiceId): string
     {
         $id = 'firewall.' . $this->serviceKey() . '_firewall.' . $payload->securityKey->value();
@@ -43,6 +65,11 @@ class IdentifierPasswordRecallerFactory extends RecallerAuthenticationFactory
         return $id;
     }
 
+    protected function getRecallerManager(): RecallerManager
+    {
+        return $this->recallerManager;
+    }
+
     public function serviceKey(): string
     {
         return 'form-login-recaller';
@@ -51,5 +78,15 @@ class IdentifierPasswordRecallerFactory extends RecallerAuthenticationFactory
     public function mirrorKey(): string
     {
         return 'form-login';
+    }
+
+    public function matcher(): ?AuthenticationRequest
+    {
+        return null;
+    }
+
+    public function userProviderKey(): ?string
+    {
+        return null;
     }
 }

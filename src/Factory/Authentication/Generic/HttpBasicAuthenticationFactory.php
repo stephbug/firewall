@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace StephBug\Firewall\Factory\Authentication;
+namespace StephBug\Firewall\Factory\Authentication\Generic;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Hashing\Hasher;
@@ -10,11 +10,11 @@ use StephBug\Firewall\Factory\Contracts\AuthenticationServiceFactory;
 use StephBug\Firewall\Factory\Payload\PayloadFactory;
 use StephBug\Firewall\Factory\Payload\PayloadService;
 use StephBug\SecurityModel\Application\Http\Firewall\HttpBasicAuthenticationFirewall;
+use StephBug\SecurityModel\Application\Http\Request\AuthenticationRequest;
 use StephBug\SecurityModel\Application\Http\Request\HttpBasicAuthenticationRequest;
 use StephBug\SecurityModel\Guard\Authentication\Providers\IdentifierPasswordAuthenticationProvider;
 use StephBug\SecurityModel\Guard\Contract\Guardable;
 use StephBug\SecurityModel\User\UserChecker;
-use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 
 class HttpBasicAuthenticationFactory implements AuthenticationServiceFactory
 {
@@ -67,7 +67,7 @@ class HttpBasicAuthenticationFactory implements AuthenticationServiceFactory
         return $id;
     }
 
-    public function matcher(): ?RequestMatcherInterface
+    public function matcher(): ?AuthenticationRequest
     {
         return new HttpBasicAuthenticationRequest();
     }

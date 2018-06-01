@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace StephBug\Firewall\Factory\Authentication;
 
 use Illuminate\Contracts\Foundation\Application;
-use StephBug\Firewall\Factory\Contracts\AuthenticationServiceFactory;
 use StephBug\Firewall\Factory\Manager\LogoutManager;
 use StephBug\Firewall\Factory\Payload\PayloadFactory;
 use StephBug\Firewall\Factory\Payload\PayloadService;
 use StephBug\SecurityModel\Application\Exception\InvalidArgument;
 use StephBug\SecurityModel\Application\Values\Security\SecurityKey;
 
-abstract class LogoutAuthenticationFactory implements AuthenticationServiceFactory
+trait HasLogoutFactory
 {
     /**
      * @var Application
@@ -22,7 +21,7 @@ abstract class LogoutAuthenticationFactory implements AuthenticationServiceFacto
     /**
      * @var LogoutManager
      */
-    private $logoutManager;
+    protected $logoutManager;
 
     public function __construct(Application $app, LogoutManager $logoutManager)
     {
@@ -63,9 +62,4 @@ abstract class LogoutAuthenticationFactory implements AuthenticationServiceFacto
     abstract protected function registerFirewall(PayloadService $payload): string;
 
     abstract public function mirrorKey(): string;
-
-    public function userProviderKey(): ?string
-    {
-        return null;
-    }
 }

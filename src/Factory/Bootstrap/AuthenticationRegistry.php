@@ -44,11 +44,6 @@ abstract class AuthenticationRegistry implements FirewallRegistry
         $builder($this->buildFactory()->setProvider($providerId));
     }
 
-    protected function registerEntrypoint(string $entrypointId, Builder $builder): void
-    {
-        $builder($this->buildFactory()->setEntrypoint($entrypointId));
-    }
-
     protected function buildFactory(): PayloadFactory
     {
         return new PayloadFactory();
