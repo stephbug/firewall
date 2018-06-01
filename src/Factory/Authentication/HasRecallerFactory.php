@@ -22,13 +22,13 @@ trait HasRecallerFactory
             ));
         }
 
-        if (!$this->getRecallerManager()->hasService($this->mirrorKey())) {
+        if (!$this->getRecallerManager()->hasService($payload->securityKey, $this->mirrorKey())) {
             throw InvalidArgument::reason(sprintf(
                 'No recaller service has been registered for service key %s', $this->mirrorKey()
             ));
         }
 
-        $recallerServiceId = $this->getRecallerManager()->getService($this->mirrorKey());
+        $recallerServiceId = $this->getRecallerManager()->getService($payload->securityKey, $this->mirrorKey());
 
         return (new PayloadFactory())
             ->setFirewall($this->registerFirewall($payload, $recallerServiceId))
