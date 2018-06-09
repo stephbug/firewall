@@ -72,7 +72,25 @@ class SessionContextTest extends TestCase
         $this->assertNull($eventable->getValue($context));
         $this->tokenStorage->expects($this->never())->method('getToken');
 
-        $context->handle(new Request(), $this->next());
+        $context->terminate(new Request(), new Response('foo'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_only_process_if_request_is_an_instance_of_illuminate_request(): void
+    {
+        $context = $this->getSessionContextInstance();
+
+        $ref = new \ReflectionObject($context);
+        $eventable = $ref->getProperty('event');
+        $eventable->setAccessible(true);
+
+        $this->assertNull($eventable->getValue($context));
+        $this->tokenStorage->expects($this->never())->method('getToken');
+
+        $request = new \Symfony\Component\HttpFoundation\Request();
+        $context->terminate($request, new Response('foo'));
     }
 
     /**
