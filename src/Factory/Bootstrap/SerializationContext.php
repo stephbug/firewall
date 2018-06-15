@@ -6,8 +6,6 @@ namespace StephBug\Firewall\Factory\Bootstrap;
 
 use Illuminate\Contracts\Foundation\Application;
 use StephBug\Firewall\Factory\Builder;
-use StephBug\Firewall\Factory\Builder\SecurityKeyContext;
-use StephBug\Firewall\Factory\Contracts\FirewallContext;
 use StephBug\Firewall\Factory\Payload\PayloadService;
 use StephBug\SecurityModel\Application\Http\Event\ContextEvent;
 use StephBug\SecurityModel\Application\Http\Firewall\ContextFirewall;
@@ -54,10 +52,5 @@ class SerializationContext extends AuthenticationRegistry
         }
 
         return $collection;
-    }
-
-    protected function getServiceId(FirewallContext $context, SecurityKeyContext $keyAware): string
-    {
-        return 'firewall.context_' . $keyAware->toString($context);
     }
 }

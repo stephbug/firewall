@@ -38,6 +38,6 @@ class EntrypointRegistry implements FirewallRegistry
     {
         return $this->app->bound($entrypoint)
             ? $entrypoint
-            : 'firewall.default_entrypoint.' . $builder->contextKey()->toString($builder->context());
+            : 'firewall.default_entrypoint.' . $builder->contextKey()->toString();
     }
 }

@@ -27,7 +27,7 @@ abstract class AuthenticationRegistry implements FirewallRegistry
         $context = $builder->context();
 
         return new PayloadService(
-            $builder->contextKey()->key($context),
+            $builder->contextKey()->key(),
             $context,
             $builder->userProviders()->get($context, $userProviderKey),
             $builder->defaultEntrypointId()

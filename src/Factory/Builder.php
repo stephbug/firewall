@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use StephBug\Firewall\Factory\Builder\Aggregate;
 use StephBug\Firewall\Factory\Builder\FirewallMap;
-use StephBug\Firewall\Factory\Builder\SecurityKeyContext;
+use StephBug\Firewall\Factory\Builder\SecurityContext;
 use StephBug\Firewall\Factory\Builder\UserProviders;
 use StephBug\Firewall\Factory\Contracts\FirewallContext;
 use StephBug\Firewall\Factory\Payload\PayloadFactory;
@@ -21,19 +21,14 @@ class Builder
     private $services;
 
     /**
-     * @var FirewallContext
-     */
-    private $context;
-
-    /**
      * @var UserProviders
      */
     private $userProviders;
 
     /**
-     * @var SecurityKeyContext
+     * @var SecurityContext
      */
-    private $contextKey;
+    private $securityContext;
 
     /**
      * @var Aggregate
@@ -51,14 +46,12 @@ class Builder
     private $defaultEntrypointId;
 
     public function __construct(FirewallMap $services,
-                                FirewallContext $context,
                                 UserProviders $userProviders,
-                                SecurityKeyContext $contextKey)
+                                SecurityContext $securityContext)
     {
         $this->services = $services;
-        $this->context = $context;
         $this->userProviders = $userProviders;
-        $this->contextKey = $contextKey;
+        $this->securityContext = $securityContext;
         $this->aggregate = new Aggregate();
     }
 
@@ -74,12 +67,12 @@ class Builder
 
     public function context(): FirewallContext
     {
-        return $this->context;
+        return $this->securityContext->context();
     }
 
-    public function contextKey(): SecurityKeyContext
+    public function contextKey(): SecurityContext
     {
-        return $this->contextKey;
+        return $this->securityContext;
     }
 
     public function userProviders(): UserProviders

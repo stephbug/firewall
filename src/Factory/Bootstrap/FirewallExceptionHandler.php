@@ -30,7 +30,7 @@ class FirewallExceptionHandler extends AuthenticationRegistry
 
     private function registerExceptionHandler(Builder $builder): string
     {
-        $id = 'firewall.exception_handler.' . $builder->contextKey()->toString($builder->context());
+        $id = 'firewall.exception_handler.' . $builder->contextKey()->toString();
 
         $this->app->bind($id, function (Application $app) use ($builder) {
             return new SecurityHandler(
@@ -47,7 +47,7 @@ class FirewallExceptionHandler extends AuthenticationRegistry
     {
         return new ContextualHandler(
             $this->app->make(TokenStorage::class),
-            $builder->contextKey()->key($builder->context()),
+            $builder->contextKey()->key(),
             $this->app->make(TrustResolver::class),
             $builder->context()->isStateless(),
             $this->resolveHandler($builder->defaultEntrypointId()),

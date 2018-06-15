@@ -45,7 +45,7 @@ trait HasTestBuilder
         parent::setUp();
 
         $this->context = $this->getMockForAbstractClass(FirewallContext::class);
-        $this->keyContext = $this->getMockBuilder(Builder\SecurityKeyContext::class)
+        $this->keyContext = $this->getMockBuilder(Builder\SecurityContext::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->map = $this->getMockBuilder(Builder\FirewallMap::class)

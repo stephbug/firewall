@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace StephBugTest\Firewall\Unit\Factory\Builder;
 
 use StephBug\Firewall\Factory\Contracts\FirewallContext;
-use StephBug\Firewall\Factory\Builder\SecurityKeyContext;
+use StephBug\Firewall\Factory\Builder\SecurityContext;
 use StephBugTest\Firewall\Mock\SecurityTestKey;
 use StephBugTest\Firewall\Unit\TestCase;
 
@@ -16,7 +16,7 @@ class SecurityKeyContextTest extends TestCase
      */
     public function it_can_access_security_key(): void
     {
-        $sec = new SecurityKeyContext($key = new SecurityTestKey('foo'));
+        $sec = new SecurityContext($key = new SecurityTestKey('foo'));
 
         $this->assertEquals($key, $sec->originalKey());
     }
@@ -26,7 +26,7 @@ class SecurityKeyContextTest extends TestCase
      */
     public function it_return_same_key_when_key_from_context_is_equals(): void
     {
-        $sec = new SecurityKeyContext($key = new SecurityTestKey('foo'));
+        $sec = new SecurityContext($key = new SecurityTestKey('foo'));
 
         $context = $this->getMockForAbstractClass(FirewallContext::class);
         $context->expects($this->once())->method('securityKey')->willReturn($key);
@@ -39,7 +39,7 @@ class SecurityKeyContextTest extends TestCase
      */
     public function it_return_same_key_when_firewall_context_is_stateless(): void
     {
-        $sec = new SecurityKeyContext($key = new SecurityTestKey('foo'));
+        $sec = new SecurityContext($key = new SecurityTestKey('foo'));
         $diffKey = new SecurityTestKey('bar');
 
         $context = $this->getMockForAbstractClass(FirewallContext::class);
@@ -57,7 +57,7 @@ class SecurityKeyContextTest extends TestCase
         // security key constructed is the firewall name and
         // could be differ from security key set in a firewall context
         // which is how we can share auth between firewall
-        $sec = new SecurityKeyContext($key = new SecurityTestKey('foo'));
+        $sec = new SecurityContext($key = new SecurityTestKey('foo'));
         $diffKey = new SecurityTestKey('bar');
 
         $context = $this->getMockForAbstractClass(FirewallContext::class);
@@ -72,7 +72,7 @@ class SecurityKeyContextTest extends TestCase
      */
     public function it_can_compare_security_key_from_context(): void
     {
-        $sec = new SecurityKeyContext($key = new SecurityTestKey('foo'));
+        $sec = new SecurityContext($key = new SecurityTestKey('foo'));
         $context = $this->getMockForAbstractClass(FirewallContext::class);
         $context->expects($this->any())->method('securityKey')->willReturn($key);
         $this->assertTrue($sec->hasSameContext($context));
@@ -89,7 +89,7 @@ class SecurityKeyContextTest extends TestCase
      */
     public function it_can_serialize_security_key(): void
     {
-        $sec = new SecurityKeyContext($key = new SecurityTestKey('foo'));
+        $sec = new SecurityContext($key = new SecurityTestKey('foo'));
 
         $context = $this->getMockForAbstractClass(FirewallContext::class);
         $context->expects($this->once())->method('securityKey')->willReturn($key);

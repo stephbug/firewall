@@ -30,7 +30,7 @@ class LogoutService implements FirewallRegistry
     public function compose(Builder $builder, \Closure $make)
     {
         if (!empty($payload = $builder->context()->logout())) {
-            $this->logoutManager->addLogoutContext($builder->contextKey()->key($builder->context()), $payload);
+            $this->logoutManager->addLogoutContext($builder->contextKey()->key(), $payload);
         }
 
         return $make($builder);

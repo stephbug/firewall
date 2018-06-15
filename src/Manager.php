@@ -7,7 +7,7 @@ namespace StephBug\Firewall;
 use Illuminate\Contracts\Foundation\Application;
 use StephBug\Firewall\Factory\Builder;
 use StephBug\Firewall\Factory\Builder\FirewallMap;
-use StephBug\Firewall\Factory\Builder\SecurityKeyContext;
+use StephBug\Firewall\Factory\Builder\SecurityContext;
 use StephBug\Firewall\Factory\Builder\UserProviders;
 use StephBug\Firewall\Factory\Context\ImmutableContext;
 use StephBug\Firewall\Factory\Contracts\FirewallContext;
@@ -45,9 +45,11 @@ class Manager
     {
         return new Builder(
             $this->requireMap($name),
-            $this->resolveContext($name),
             $this->userProviders(),
-            new SecurityKeyContext(new FirewallKey($name))
+            new SecurityContext(
+                $this->resolveContext($name),
+                new FirewallKey($name)
+            )
         );
     }
 
