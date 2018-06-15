@@ -16,7 +16,9 @@ class ImpersonateUser extends AuthenticationRegistry
 {
     public function compose(Builder $builder, \Closure $make)
     {
-        if ($builder->context()->isAllowedToSwitch()) {
+        $firewallContext = $builder->context();
+
+        if ($firewallContext->isAllowedToSwitch() || !$firewallContext->isStateless()) {
             $serviceId = $this->registerImpersonateUser(
                 $this->buildService($builder)
             );
